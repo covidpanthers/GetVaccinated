@@ -12,7 +12,7 @@ class GetVaccinatedApplicationTests {
 	
 	private Appointment appointment;
 	
-    @BeforeEach                                         
+    @BeforeEach                                   
     public void setUp() throws Exception {
 		appointment = new Appointment();
     }
