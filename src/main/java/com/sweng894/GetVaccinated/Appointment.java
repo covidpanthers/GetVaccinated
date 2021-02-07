@@ -1,10 +1,13 @@
 package com.sweng894.GetVaccinated;
 
+import java.sql.Date;
+
 class Appointment {
 
 	private String name;
 	private Integer confirmationNumber;
 	private String status;
+	private Date date;
 	
 	public Appointment() {
 		
@@ -33,4 +36,14 @@ class Appointment {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
+	}
+	
+	
 }

@@ -3,6 +3,8 @@ package com.sweng894.GetVaccinated;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
+import java.util.Date;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,6 +17,8 @@ class GetVaccinatedApplicationTests {
     @BeforeEach                                   
     public void setUp() throws Exception {
 		appointment = new Appointment();
+		appointment.setConfirmationNumber(123);
+		appointment.setDate(java.sql.Date.valueOf("2021-02-06"));
     }
 
 	@Test
@@ -22,7 +26,7 @@ class GetVaccinatedApplicationTests {
 	}
 
 	@Test
-	void testModifyAppointment() {
+	void testModifyAppointmentDetails() {
 		
 		String beforeName = appointment.getName();
 		appointment.setName("changed name");
@@ -30,6 +34,19 @@ class GetVaccinatedApplicationTests {
 		String afterName = appointment.getName();
 		
 		assertNotEquals(beforeName, afterName);
+	}
+	
+	@Test
+	void testChangeAppointmentDate() {
+		
+		Date oldDate = appointment.getDate();
+		Integer oldConfirmationNumber = appointment.getConfirmationNumber();
+		
+		appointment.setDate(java.sql.Date.valueOf("2021-03-06")); 
+		appointment.setConfirmationNumber(456);
+		
+		assertNotEquals(oldDate, appointment.getDate());
+		assertNotEquals(oldConfirmationNumber, appointment.getConfirmationNumber());
 	}
 	
 	@Test
