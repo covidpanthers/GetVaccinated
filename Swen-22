@@ -1,0 +1,22 @@
+import javax.swing.*;
+import java.awt.*;
+
+// Java JComboBox drop down menu
+// list Vaccine brands
+public class vaccineBrand {
+    JFrame f;
+    vaccineBrand(){
+
+        f=new JFrame("Vaccine Brand");
+        String country[]={"Select Vaccine Brand","Pfizer-BioNTech","Moderna","Johnson & Johnson","AstraZeneca","Novavax"};
+        JComboBox cb=new JComboBox(country);
+        cb.setBounds(50, 50,200,30);
+        f.add(cb);
+        f.setLayout(null);
+        f.setSize(400,500);
+        f.setVisible(true);
+    }
+    public static void main(String[] args) {
+        new vaccineBrand();
+    }
+}
