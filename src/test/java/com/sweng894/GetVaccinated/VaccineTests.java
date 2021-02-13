@@ -27,14 +27,16 @@ public class VaccineTests {
     vaccineLocations.add(new VaccineLocations(
       1,
       vaccine.getId(),
-      "Boston"
+      "Boston",
+      100
     ));
   }
 
   @Test
   void findVaccines() {
     String location = "Boston";
-    Boolean isFound = false;
+    boolean isFound = false;
+
     Iterator it = vaccineLocations.iterator();
     while (it.hasNext()) {
       VaccineLocations vl = (VaccineLocations) it.next();
@@ -42,6 +44,22 @@ public class VaccineTests {
         isFound = true;
       }
     }
-    assertEquals(isFound, true);
+    assertTrue(isFound);
+  }
+
+  @Test
+  void checkVaccineAvailability() {
+    int vaccineId = 1;
+    String location = "Boston";
+
+    boolean isAvailable = false;
+    Iterator it = vaccineLocations.iterator();
+    while (it.hasNext()) {
+      VaccineLocations vl = (VaccineLocations) it.next();
+      if(vl.getLocation().equals(location) && vl.getVaccineId() == vaccineId && vl.getAvailabilityCount() > 0) {
+        isAvailable = true;
+      }
+    }
+    assertTrue(isAvailable);
   }
 }
