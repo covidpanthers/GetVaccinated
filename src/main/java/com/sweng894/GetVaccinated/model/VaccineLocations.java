@@ -4,11 +4,13 @@ public class VaccineLocations {
   private int id;
   private int vaccineId;
   private String location;
+  private int availabilityCount;
 
-  public VaccineLocations(int id, int vaccineId, String location) {
+  public VaccineLocations(int id, int vaccineId, String location, int availabilityCount) {
     this.id = id;
     this.vaccineId = vaccineId;
     this.location = location;
+    this.availabilityCount = availabilityCount;
   }
 
   public int getId() {
@@ -33,5 +35,13 @@ public class VaccineLocations {
 
   public void setLocation(String location) {
     this.location = location;
+  }
+
+  public int getAvailabilityCount() {
+    return availabilityCount;
+  }
+
+  public void setAvailabilityCount(int availabilityCount) {
+    this.availabilityCount = availabilityCount;
   }
 }
