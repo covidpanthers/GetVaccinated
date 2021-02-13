@@ -8,6 +8,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public final class ScheduleController {
+  private final ScheduleRepository repository;
+
+  public ScheduleController(ScheduleRepository repository) {
+    this.repository = repository;
+  }
+
   @GetMapping("/schedule")
   public String get(Model model) {
     var request = new ScheduleRequest();
@@ -17,10 +23,8 @@ public final class ScheduleController {
   }
   @PostMapping("/schedule")
   public String post(@ModelAttribute ScheduleRequest request, Model model) {
-    // TODO: use request to create a confirmation
     // TODO: add failed request path
-    var confirmation = new ScheduleConfirmation();
-    confirmation.setConfirmationNumber("PLACEHOLDER");
+    var confirmation = this.repository.saveRequest(request);
     model.addAttribute("confirmation", confirmation);
     return "schedule/confirmation";
   }
