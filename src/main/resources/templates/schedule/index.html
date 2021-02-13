@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<!--/*@thymesVar id="request" type="com.sweng894.GetVaccinated.schedule.ScheduleRequest"*/-->
+<head>
+  <meta charset="UTF-8">
+  <title>Get Vaccinated - Schedule</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      max-width: 80ch;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1><a href="/">Get Vaccinated</a></h1>
+</header>
+<main>
+  <!-- TODO: replace with a datepicker that allows blocking out dates -->
+  <form method="post" th:action="@{/schedule}" th:object="${request}">
+    <label>
+      Select a time:
+      <input th:field="*{startTime}" type="datetime-local" name="appt" min="2021-02-15T00:00" value="2021-02-16T00:00" step="3600">
+    </label>
+    <button type="submit">Request Appointment</button>
+  </form>
+</main>
+</body>
+</html>
