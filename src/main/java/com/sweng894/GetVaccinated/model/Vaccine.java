@@ -8,6 +8,7 @@ public class Vaccine {
   private String title;
   private Date launchDate;
   private int noOfShots;
+  private String distributionProcess;
 
   public Vaccine(int id, int companyId, String title, Date launchDate) {
     this.id = id;
@@ -54,5 +55,13 @@ public class Vaccine {
 
   public void setNoOfShots(int noOfShots) {
     this.noOfShots = noOfShots;
+  }
+
+  public String getDistributionProcess() {
+    return distributionProcess;
+  }
+
+  public void setDistributionProcess(String distributionProcess) {
+    this.distributionProcess = distributionProcess;
   }
 }

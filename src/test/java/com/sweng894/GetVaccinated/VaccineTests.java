@@ -23,6 +23,9 @@ public class VaccineTests {
       "Pfizer",
       java.sql.Date.valueOf("2021-02-10")
     );
+    vaccine.setDistributionProcess(
+      "This is test process"
+    );
     vaccineLocations = new ArrayList<VaccineLocations>();
     vaccineLocations.add(new VaccineLocations(
       1,
@@ -68,5 +71,22 @@ public class VaccineTests {
     ArrayList vaccines = new ArrayList();
     vaccines.add(vaccine);
     assertEquals(vaccines.size(), 1);
+  }
+
+  @Test
+  void getVaccineInfoById() {
+    int vaccineId = 1;
+
+    String info = null;
+    ArrayList vaccines = new ArrayList();
+    vaccines.add(vaccine);
+    Iterator it = vaccines.iterator();
+    while (it.hasNext()) {
+      Vaccine v = (Vaccine) it.next();
+      if(v.getId() == vaccineId) {
+        info = v.getDistributionProcess();
+      }
+    }
+    assertEquals(info, "This is test process");
   }
 }
