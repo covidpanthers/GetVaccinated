@@ -44,4 +44,11 @@ public class VaccineTests {
     }
     assertEquals(isFound, true);
   }
+
+  @Test
+  void getVaccines() {
+    ArrayList vaccines = new ArrayList();
+    vaccines.add(vaccine);
+    assertEquals(vaccines.size(), 1);
+  }
 }

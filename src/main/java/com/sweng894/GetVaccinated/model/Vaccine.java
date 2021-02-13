@@ -7,6 +7,7 @@ public class Vaccine {
   private int companyId;
   private String title;
   private Date launchDate;
+  private int noOfShots;
 
   public Vaccine(int id, int companyId, String title, Date launchDate) {
     this.id = id;
@@ -45,5 +46,13 @@ public class Vaccine {
 
   public void setLaunchDate(Date launchDate) {
     this.launchDate = launchDate;
+  }
+
+  public int getNoOfShots() {
+    return noOfShots;
+  }
+
+  public void setNoOfShots(int noOfShots) {
+    this.noOfShots = noOfShots;
   }
 }
