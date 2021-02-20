@@ -30,9 +30,10 @@
 </header>
 <main>
   <div>
+    <p>Select a date:</p>
     <h3 th:text="${monthDisplayName}"></h3>
-    <a th:href="@{/schedule(month=${previousMonth})}"><</a>
-    <a th:href="@{/schedule(month=${nextMonth})}">></a>
+    <a th:href="@{/schedule(month=${previousMonth})}">< Previous</a>
+    <a th:href="@{/schedule(month=${nextMonth})}">Next ></a>
     <table>
       <thead>
       <tr>
@@ -74,7 +75,7 @@
   </div>
   <form method="post" th:action="@{/schedule}" th:object="${request}">
     <label>
-      Select a time:
+      Select an available time:
       <select th:field="*{time}" required>
         <option value=""></option>
         <option th:each="time : ${times}" th:value="${time}" th:text="${time}">A</option>
