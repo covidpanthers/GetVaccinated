@@ -19,14 +19,33 @@ import org.springframework.test.web.servlet.MockMvc;
 public final class ScheduleControllerTests {
   @Autowired
   private MockMvc mockMvc;
+  @Autowired
+  private ScheduleRepository repository;
 
   @Test
   public void getSchedule() throws Exception {
-    this.mockMvc.perform(get("/schedule")).andExpect(status().isOk());
+    mockMvc.perform(get("/schedule")).andExpect(status().isOk());
   }
 
   @Test
   public void postSchedule() throws Exception {
-    this.mockMvc.perform(post("/schedule")).andExpect(status().isOk());
+    mockMvc.perform(post("/schedule")).andExpect(status().isOk());
+  }
+
+  @Test
+  public void getCalendarInviteNotFound() throws Exception {
+    mockMvc.perform(get("/schedule/confirmation/BAD_CONFIRMATION")).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void getCalendarInvite() throws Exception {
+    var request = new ScheduleRequest();
+    request.setMonth(6);
+    request.setDay(1);
+    request.setTime("4:00 PM");
+    var confirmation = repository.saveRequest(request);
+    mockMvc.perform(get("/schedule/confirmation/" + confirmation.getConfirmationNumber()))
+      .andExpect(status().isOk())
+      .andExpect(content().contentType("text/calendar"));
   }
 }

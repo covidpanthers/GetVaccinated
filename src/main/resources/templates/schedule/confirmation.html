@@ -12,6 +12,7 @@
 </header>
 <main>
   <p>Confirmation Number: <span th:text="${confirmation.confirmationNumber}"></span></p>
+  <p><a th:href="@{/schedule/confirmation/{confirmationNumber}.ics(confirmationNumber=${confirmation.confirmationNumber})}">Download Calendar Invite</a></p>
 </main>
 </body>
 </html>
