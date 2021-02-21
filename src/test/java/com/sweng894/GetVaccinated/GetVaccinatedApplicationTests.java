@@ -1,6 +1,8 @@
 package com.sweng894.GetVaccinated;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,4 +27,5 @@ public final class GetVaccinatedApplicationTests {
   void getHomePage() throws Exception {
     mockMvc.perform(get("/")).andExpect(status().isOk());
   }
+
 }
