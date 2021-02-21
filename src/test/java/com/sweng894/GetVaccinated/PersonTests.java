@@ -1,6 +1,6 @@
 package com.sweng894.GetVaccinated;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,19 +18,36 @@ public class PersonTests {
 	}
 
 	@Test
-	void testEligiblePerson() {
+	void testVaccinatedPerson() {
 
-		// Person has not been vaccinated and is not in the current rollout phase
-		if (("1B".compareTo(person.getPhase())) <= 0) {
-			assertTrue("N".equals(person.getIsVaccinated()), person.getName() + " is ineligible.");
-		}
+		person.setIsVaccinated("Y");
 
-		// Person has been vaccinated
+		assertTrue("Y".equals(person.getIsVaccinated()),
+				person.getName() + " is eligible, has not been vaccinated yet.");
+	}
+
+	@Test
+	void testNotVaccinatedPerson() {
+		assertTrue("N".equals(person.getIsVaccinated()), person.getName() + " is eligible, has not been vaccinated.");
+	}
+
+	@Test
+	void testEligiblePhase() {
+		boolean inEligiblePhase = person.inEligiblePhase(person);
+
+		assertFalse(inEligiblePhase, person.getName() + " is not in an eligible phase.");
+	}
+
+	@Test
+	void testIneligiblePhase() {
+
 		Person person = new Person();
 		person.setName("Jane Doe");
 		person.setIsVaccinated("Y");
-		person.setPhase("2");
-		assertTrue("Y".equals(person.getIsVaccinated()), person.getName() + " is ineligible.");
-	}
+		person.setPhase("1");
 
+		boolean inEligiblePhase = person.inEligiblePhase(person);
+
+		assertTrue(inEligiblePhase, person.getName() + " is in an eligible phase.");
+	}
 }

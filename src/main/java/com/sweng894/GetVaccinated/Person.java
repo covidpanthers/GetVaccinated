@@ -40,4 +40,13 @@ public class Person {
 		this.isVaccinated = isVaccinated;
 	}
 
+	public boolean inEligiblePhase(Person person) {
+
+		// TODO: get the system phase
+		if (("1B".compareTo(person.getPhase())) >= 0) {
+			return true;
+		}
+
+		return false;
+	}
 }
