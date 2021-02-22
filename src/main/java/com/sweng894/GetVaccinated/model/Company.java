@@ -1,6 +1,6 @@
 package com.sweng894.GetVaccinated.model;
 
-public class Companies {
+public class Company {
   private int id;
   private String name;
   private String address;

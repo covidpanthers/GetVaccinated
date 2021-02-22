@@ -10,6 +10,8 @@ public class Vaccine {
   private int noOfShots;
   private String distributionProcess;
 
+  public Vaccine() { }
+
   public Vaccine(int id, int companyId, String title, Date launchDate) {
     this.id = id;
     this.companyId = companyId;

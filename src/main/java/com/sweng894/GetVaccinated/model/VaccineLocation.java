@@ -1,12 +1,12 @@
 package com.sweng894.GetVaccinated.model;
 
-public class VaccineLocations {
+public class VaccineLocation {
   private int id;
   private int vaccineId;
   private String location;
   private int availabilityCount;
 
-  public VaccineLocations(int id, int vaccineId, String location, int availabilityCount) {
+  public VaccineLocation(int id, int vaccineId, String location, int availabilityCount) {
     this.id = id;
     this.vaccineId = vaccineId;
     this.location = location;

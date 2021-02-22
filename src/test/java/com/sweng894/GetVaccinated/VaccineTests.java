@@ -1,7 +1,7 @@
 package com.sweng894.GetVaccinated;
 
 import com.sweng894.GetVaccinated.model.Vaccine;
-import com.sweng894.GetVaccinated.model.VaccineLocations;
+import com.sweng894.GetVaccinated.model.VaccineLocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class VaccineTests {
 
   private Vaccine vaccine;
-  private ArrayList vaccineLocations;
+  private ArrayList<VaccineLocation> vaccineLocations;
 
   @BeforeEach
   void setUp() throws Exception {
@@ -26,8 +26,9 @@ public class VaccineTests {
     vaccine.setDistributionProcess(
       "This is test process"
     );
-    vaccineLocations = new ArrayList<VaccineLocations>();
-    vaccineLocations.add(new VaccineLocations(
+
+    vaccineLocations = new ArrayList<>();
+    vaccineLocations.add(new VaccineLocation(
       1,
       vaccine.getId(),
       "Boston",
@@ -36,13 +37,31 @@ public class VaccineTests {
   }
 
   @Test
+  void checkVaccine() {
+    Vaccine anotherVaccine = new Vaccine();
+    anotherVaccine.setId(2);
+    anotherVaccine.setCompanyId(1);
+    anotherVaccine.setTitle("Zola");
+    anotherVaccine.setLaunchDate(java.sql.Date.valueOf("2021-02-10"));
+    anotherVaccine.setNoOfShots(5);
+    anotherVaccine.setDistributionProcess("This is test process");
+
+    assertEquals(anotherVaccine.getId(), 2);
+    assertEquals(anotherVaccine.getCompanyId(), 1);
+    assertEquals(anotherVaccine.getTitle(), "Zola");
+    assertEquals(anotherVaccine.getLaunchDate().toString(), java.sql.Date.valueOf("2021-02-10").toString());
+    assertEquals(anotherVaccine.getNoOfShots(), 5);
+    assertEquals(anotherVaccine.getDistributionProcess(), "This is test process");
+  }
+
+  @Test
   void findVaccines() {
     String location = "Boston";
     boolean isFound = false;
 
-    Iterator it = vaccineLocations.iterator();
+    Iterator<VaccineLocation> it = vaccineLocations.iterator();
     while (it.hasNext()) {
-      VaccineLocations vl = (VaccineLocations) it.next();
+      VaccineLocation vl = it.next();
       if(vl.getLocation().equals(location)) {
         isFound = true;
       }
@@ -56,9 +75,9 @@ public class VaccineTests {
     String location = "Boston";
 
     boolean isAvailable = false;
-    Iterator it = vaccineLocations.iterator();
+    Iterator<VaccineLocation> it = vaccineLocations.iterator();
     while (it.hasNext()) {
-      VaccineLocations vl = (VaccineLocations) it.next();
+      VaccineLocation vl = it.next();
       if(vl.getLocation().equals(location) && vl.getVaccineId() == vaccineId && vl.getAvailabilityCount() > 0) {
         isAvailable = true;
       }
@@ -68,7 +87,7 @@ public class VaccineTests {
 
   @Test
   void getVaccines() {
-    ArrayList vaccines = new ArrayList();
+    ArrayList<Vaccine> vaccines = new ArrayList<>();
     vaccines.add(vaccine);
     assertEquals(vaccines.size(), 1);
   }
@@ -78,11 +97,11 @@ public class VaccineTests {
     int vaccineId = 1;
 
     String info = null;
-    ArrayList vaccines = new ArrayList();
+    ArrayList<Vaccine> vaccines = new ArrayList<>();
     vaccines.add(vaccine);
-    Iterator it = vaccines.iterator();
+    Iterator<Vaccine> it = vaccines.iterator();
     while (it.hasNext()) {
-      Vaccine v = (Vaccine) it.next();
+      Vaccine v = it.next();
       if(v.getId() == vaccineId) {
         info = v.getDistributionProcess();
       }
