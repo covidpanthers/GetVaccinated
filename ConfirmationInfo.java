@@ -9,7 +9,7 @@ class ConfirmationInfo {
 
     }
 
-      ConfirmationInfo(String email) {
+      public ConfirmationInfo(String email) {
         this.email = email;
       }
   public void setEmail(String email) {
