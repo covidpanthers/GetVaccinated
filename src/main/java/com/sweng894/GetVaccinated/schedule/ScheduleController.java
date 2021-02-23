@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.SocketException;
+
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -59,8 +61,13 @@ public final class ScheduleController {
   @PostMapping("/schedule")
   public String post(@ModelAttribute ScheduleRequest request, Model model) {
     // TODO: add failed request path
-    // TODO: calendar invite
     var confirmation = this.repository.saveRequest(request);
+    model.addAttribute("confirmation", confirmation);
+    return "redirect:/schedule/" + confirmation.getConfirmationNumber();
+  }
+
+  @GetMapping("/schedule/{confirmation}")
+  public String getConfirmation(@PathVariable String confirmation, Model model) {
     model.addAttribute("confirmation", confirmation);
     return "schedule/confirmation";
   }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<!--/*@thymesVar id="confirmation" type="com.sweng894.GetVaccinated.schedule.ScheduleConfirmation"*/-->
+<!--/*@thymesVar id="confirmation" type="java.lang.String"*/-->
 <head>
   <meta charset="UTF-8">
   <title>Get Vaccinated - Confirmation</title>
@@ -11,8 +11,8 @@
   <h1><a href="/">Get Vaccinated</a></h1>
 </header>
 <main>
-  <p>Confirmation Number: <span th:text="${confirmation.confirmationNumber}"></span></p>
-  <p><a th:href="@{/schedule/confirmation/{confirmationNumber}.ics(confirmationNumber=${confirmation.confirmationNumber})}">Download Calendar Invite</a></p>
+  <p>Confirmation Number: <span th:text="${confirmation}"></span></p>
+  <p><a th:href="@{/schedule/confirmation/{confirmationNumber}.ics(confirmationNumber=${confirmation})}">Download Calendar Invite</a></p>
 </main>
 </body>
 </html>
