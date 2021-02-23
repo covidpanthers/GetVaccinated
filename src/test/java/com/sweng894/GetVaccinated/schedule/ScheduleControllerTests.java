@@ -1,18 +1,15 @@
 package com.sweng894.GetVaccinated.schedule;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.servlet.MockMvc;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -29,12 +26,27 @@ public final class ScheduleControllerTests {
 
   @Test
   public void postSchedule() throws Exception {
-    mockMvc.perform(post("/schedule")).andExpect(status().isOk());
+    mockMvc.perform(post("/schedule")).andExpect(status().is3xxRedirection());
+  }
+
+  @Test
+  public void getConfirmationNotFound() throws Exception {
+    mockMvc.perform(get("/schedule/does-not-exist")).andExpect(status().isNotFound());
+  }
+
+  @Test
+  public void getConfirmation() throws Exception {
+    var request = new ScheduleRequest();
+    request.setMonth(6);
+    request.setDay(1);
+    request.setTime("11:00");
+    var confirmation = repository.saveRequest(request);
+    mockMvc.perform(get("/schedule/" + confirmation.getConfirmationNumber())).andExpect(status().isOk());
   }
 
   @Test
   public void getCalendarInviteNotFound() throws Exception {
-    mockMvc.perform(get("/schedule/confirmation/BAD_CONFIRMATION")).andExpect(status().isNotFound());
+    mockMvc.perform(get("/schedule/confirmation/BAD_CONFIRMATION.ics")).andExpect(status().isNotFound());
   }
 
   @Test
@@ -42,9 +54,9 @@ public final class ScheduleControllerTests {
     var request = new ScheduleRequest();
     request.setMonth(6);
     request.setDay(1);
-    request.setTime("4:00 PM");
+    request.setTime("16:00");
     var confirmation = repository.saveRequest(request);
-    mockMvc.perform(get("/schedule/confirmation/" + confirmation.getConfirmationNumber()))
+    mockMvc.perform(get("/schedule/confirmation/" + confirmation.getConfirmationNumber() + ".ics"))
       .andExpect(status().isOk())
       .andExpect(content().contentType("text/calendar"));
   }

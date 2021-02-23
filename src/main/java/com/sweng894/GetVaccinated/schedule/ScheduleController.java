@@ -1,6 +1,5 @@
 package com.sweng894.GetVaccinated.schedule;
 
-
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -17,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.SocketException;
-
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -42,8 +39,11 @@ public final class ScheduleController {
       month = LocalDateTime.now().getMonthValue();
     }
     var weeks = Week.weeksOfMonth(2021, month);
-    // TODO: retrieve this data dynamically based upon availability for the date
-    var times = Arrays.asList("12:00 PM", "1:00 PM", "2:00 PM");
+    // TODO: retrieve this data dynamically when appointments have availability information
+    var times = Arrays.asList(
+      "10:00", "11:00", "12:00", "13:00", "14:00",
+      "15:00", "16:00", "17:00"
+    );
     var request = new ScheduleRequest();
     request.setTime("");
     request.setMonth(month);
@@ -58,17 +58,21 @@ public final class ScheduleController {
     model.addAttribute("weeks", weeks);
     return "schedule/index";
   }
+
   @PostMapping("/schedule")
   public String post(@ModelAttribute ScheduleRequest request, Model model) {
-    // TODO: add failed request path
     var confirmation = this.repository.saveRequest(request);
     model.addAttribute("confirmation", confirmation);
     return "redirect:/schedule/" + confirmation.getConfirmationNumber();
   }
 
-  @GetMapping("/schedule/{confirmation}")
-  public String getConfirmation(@PathVariable String confirmation, Model model) {
-    model.addAttribute("confirmation", confirmation);
+  @GetMapping("/schedule/{confirmationNumber}")
+  public String getConfirmation(@PathVariable String confirmationNumber, Model model) {
+    var scheduleRequest = repository.getRequest(confirmationNumber);
+    if (scheduleRequest == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
+    }
+    model.addAttribute("confirmationNumber", confirmationNumber);
     return "schedule/confirmation";
   }
 
@@ -78,28 +82,26 @@ public final class ScheduleController {
     if (scheduleRequest == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
     }
+    var parts = scheduleRequest.getTime().split(":");
+    var hour = Integer.parseInt(parts[0]);
     var icsCalendar = new Calendar();
     icsCalendar.getProperties().add(new ProdId("-//sweng894//GetVaccinated//EN"));
     icsCalendar.getProperties().add(Version.VERSION_2_0);
     icsCalendar.getProperties().add(CalScale.GREGORIAN);
 
     var startDate = new GregorianCalendar();
-    // startDate.setTimeZone(timezone);
     startDate.set(java.util.Calendar.MONTH, scheduleRequest.getMonth());
     startDate.set(java.util.Calendar.DAY_OF_MONTH, scheduleRequest.getDay());
     startDate.set(java.util.Calendar.YEAR, 2021);
-    // TODO: do not hardcode hour of day
-    startDate.set(java.util.Calendar.HOUR_OF_DAY, 12);
+    startDate.set(java.util.Calendar.HOUR_OF_DAY, hour);
     startDate.set(java.util.Calendar.MINUTE, 0);
     startDate.set(java.util.Calendar.SECOND, 0);
 
     var endDate = new GregorianCalendar();
-    // startDate.setTimeZone(timezone);
     startDate.set(java.util.Calendar.MONTH, scheduleRequest.getMonth());
     startDate.set(java.util.Calendar.DAY_OF_MONTH, scheduleRequest.getDay());
     startDate.set(java.util.Calendar.YEAR, 2021);
-    // TODO: do not hardcode hour of day
-    startDate.set(java.util.Calendar.HOUR_OF_DAY, 13);
+    startDate.set(java.util.Calendar.HOUR_OF_DAY, hour + 1);
     startDate.set(java.util.Calendar.MINUTE, 0);
     startDate.set(java.util.Calendar.SECOND, 0);
 
