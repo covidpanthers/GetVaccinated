@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<!--/*@thymesVar id="request" type="com.sweng894.GetVaccinated.schedule.ScheduleRequest"*/-->
+<!--/*@thymesVar id="times" type="java.util.List<String>"*/-->
+<!--/*@thymesVar id="weeks" type="java.util.List<java.util.Map<java.time.DayOfWeek, Integer>>"*/-->
+<!--/*@thymesVar id="monthDisplayName" type="java.lang.String"*/-->
+<!--/*@thymesVar id="month" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="day" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="previousMonth" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="nextMonth" type="java.lang.Integer"*/-->
+<head>
+  <meta charset="UTF-8">
+  <title>Get Vaccinated - Schedule</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <style>
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+      max-width: 80ch;
+    }
+    .selected-date {
+      background-color: gray;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <h1><a href="/">Get Vaccinated</a></h1>
+</header>
+<main>
+  <div>
+    <p>Select a date:</p>
+    <h3 th:text="${monthDisplayName}"></h3>
+    <a th:href="@{/schedule(month=${previousMonth})}">< Previous</a>
+    <a th:href="@{/schedule(month=${nextMonth})}">Next ></a>
+    <table>
+      <thead>
+      <tr>
+        <th>Sun</th>
+        <th>Mon</th>
+        <th>Tue</th>
+        <th>Wed</th>
+        <th>Thu</th>
+        <th>Fri</th>
+        <th>Sat</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="week: ${weeks}">
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).SUNDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).SUNDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).SUNDAY)})}"></a>
+        </td>
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).MONDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).MONDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).MONDAY)})}"></a>
+        </td>
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).TUESDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).TUESDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).TUESDAY)})}"></a>
+        </td>
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).WEDNESDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).WEDNESDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).WEDNESDAY)})}"></a>
+        </td>
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).THURSDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).THURSDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).THURSDAY)})}"></a>
+        </td>
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).FRIDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).FRIDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).FRIDAY)})}"></a>
+        </td>
+        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).SATURDAY) == day ? 'selected-date' : ''}">
+          <a th:text="${week.get(T(java.time.DayOfWeek).SATURDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).SATURDAY)})}"></a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <form method="post" th:action="@{/schedule}" th:object="${request}" th:if="${day != null && month != null}">
+    <label>
+      Select an available time:
+      <select th:field="*{time}" required>
+        <option value=""></option>
+        <option th:each="time : ${times}" th:value="${time}" th:text="${time}">A</option>
+      </select>
+    </label>
+    <input type="hidden" th:field="*{month}">
+    <input type="hidden" th:field="*{day}">
+    <button type="submit">Request Appointment</button>
+  </form>
+</main>
+</body>
+</html>
