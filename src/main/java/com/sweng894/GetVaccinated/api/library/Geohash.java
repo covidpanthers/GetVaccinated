@@ -2,6 +2,9 @@ package com.sweng894.GetVaccinated.api.library;
 
 import net.minidev.json.JSONObject;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class Geohash {
 
   private static final int precision = 8;
@@ -54,7 +57,11 @@ public class Geohash {
 
   public static String encode(String address) {
     String output = "";
+
+
     JSONObject jsonObject = new JSONObject();
+    String query = URLEncoder.encode(address, StandardCharsets.UTF_8);
+
 
     return output;
   }
