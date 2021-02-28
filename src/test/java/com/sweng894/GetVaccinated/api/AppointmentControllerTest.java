@@ -5,6 +5,7 @@ import mockit.Injectable;
 import mockit.Mocked;
 import mockit.Tested;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,6 +13,7 @@ import com.sweng894.GetVaccinated.api.controller.AppointmentController;
 import com.sweng894.GetVaccinated.api.repository.AppointmentRepository;
 import com.sweng894.GetVaccinated.api.entity.Appointment;
 
+@Tag("integration")
 @SpringBootTest
 public class AppointmentControllerTest {
   @Tested
