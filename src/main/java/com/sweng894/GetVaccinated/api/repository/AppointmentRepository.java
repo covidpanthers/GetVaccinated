@@ -1,17 +1,27 @@
 package com.sweng894.GetVaccinated.api.repository;
 
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
 import com.sweng894.GetVaccinated.api.entity.Appointment;
+import org.springframework.stereotype.Repository;
 
 @Repository
 public class AppointmentRepository {
-  @Autowired
-  private DynamoDBMapper dynamoDBMapper;
+  private final DynamoDBMapper dynamoDBMapper;
+
+  public AppointmentRepository(DynamoDBMapper dynamoDBMapper, AmazonDynamoDB dynamoDB) {
+    var req = dynamoDBMapper.generateCreateTableRequest(Appointment.class);
+    req.setBillingMode("PAY_PER_REQUEST");
+    try {
+      dynamoDB.createTable(req);
+    } catch (ResourceInUseException ignored) {
+    }
+    this.dynamoDBMapper = dynamoDBMapper;
+  }
 
   public Appointment save(Appointment appointment){
     dynamoDBMapper.save(appointment);
