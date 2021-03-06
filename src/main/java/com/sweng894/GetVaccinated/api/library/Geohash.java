@@ -5,6 +5,10 @@ import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
+/*
+  Java implementation of Chris Veness' Javascript geocoding system.
+  https://github.com/chrisveness/latlon-geohash
+ */
 public class Geohash {
 
   private static final int precision = 8;
