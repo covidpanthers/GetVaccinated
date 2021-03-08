@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="vaccines" type="java.util.ArrayList<com.sweng894.GetVaccinated.api.entity.Vaccine>"*/-->
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+  <table>
+    <tr th:each="entry, stat : ${vaccines}">
+      <td th:text="${entry.value.title}"></td>
+      <td th:text="${entry.value.launchDate}"></td>
+      <td th:text="${entry.value.noOfShots}"></td>
+      <td th:text="${entry.value.distributionProcess}"></td>
+    </tr>
+  </table>
+</body>
+</html>

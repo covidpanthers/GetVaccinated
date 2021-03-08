@@ -1,6 +1,6 @@
 package com.sweng894.GetVaccinated;
 
-import com.sweng894.GetVaccinated.api.entity.Vaccine;
+import com.sweng894.GetVaccinated.model.Vaccine;
 import com.sweng894.GetVaccinated.model.VaccineLocation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
