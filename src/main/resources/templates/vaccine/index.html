@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<!--/*@thymesVar id="vaccines" type="java.util.ArrayList<com.sweng894.GetVaccinated.api.entity.Vaccine>"*/-->
+<!--/*@thymesVar id="vaccines" type="java.util.List<com.sweng894.GetVaccinated.api.entity.Vaccine>"*/-->
+<!--/*@thymesVar id="locations" type="java.util.List<com.sweng894.GetVaccinated.api.entity.VaccineLocation>"*/-->
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
+  <select>
+    <option th:each="entry, stat : ${vaccines}" th:value="${entry.id}" th:text="${entry.title}"></option>
+  </select>
+  <h1>Vaccines</h1>
+  <div th:if="${locations.size() == 0}">
+    <p>No vaccines available in this location</p>
+  </div>
   <table>
-    <tr th:each="entry, stat : ${vaccines}">
-      <td th:text="${entry.value.title}"></td>
-      <td th:text="${entry.value.launchDate}"></td>
-      <td th:text="${entry.value.noOfShots}"></td>
-      <td th:text="${entry.value.distributionProcess}"></td>
+    <tr th:each="location : ${locations}">
+      <td th:text="${entry.location}"></td>
+      <td th:text="${entry.availabilityCount}"></td>
     </tr>
   </table>
 </body>
