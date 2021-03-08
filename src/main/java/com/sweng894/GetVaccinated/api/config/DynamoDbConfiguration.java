@@ -14,30 +14,28 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 
 @Configuration
 public class DynamoDbConfiguration {
-    @Bean
-    public DynamoDBMapper DynamoDBMapper() {
-        return new DynamoDBMapper(buildAmazonDynamoDb());
-      }
+  @Bean
+  public DynamoDBMapper DynamoDBMapper() {
+    return new DynamoDBMapper(buildAmazonDynamoDb());
+  }
 
-    private AmazonDynamoDB buildAmazonDynamoDb() {
-      return AmazonDynamoDBClientBuilder
-        .standard()
-        .withEndpointConfiguration(
-          new AwsClientBuilder.EndpointConfiguration(
-            "http://localhost:8000",
+  private AmazonDynamoDB buildAmazonDynamoDb() {
+    return AmazonDynamoDBClientBuilder
+      .standard()
+      .withEndpointConfiguration(
+        new AwsClientBuilder.EndpointConfiguration(
+          "dynamodb.us-east-1.amazonaws.com",
+          "us-east-1"
+        )
+      )
+      .withCredentials(
+        new AWSStaticCredentialsProvider(
+          new BasicAWSCredentials(
+            "",
             ""
           )
         )
-        .withCredentials(
-          new AWSStaticCredentialsProvider(
-            new BasicAWSCredentials(
-              "sjluer",
-              "tjodxb"
-            )
-          )
-        )
-        .build();
-    }
-
-
+      )
+      .build();
   }
+}
