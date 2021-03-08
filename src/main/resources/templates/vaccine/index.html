@@ -2,14 +2,17 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!--/*@thymesVar id="vaccines" type="java.util.List<com.sweng894.GetVaccinated.api.entity.Vaccine>"*/-->
 <!--/*@thymesVar id="locations" type="java.util.List<com.sweng894.GetVaccinated.api.entity.VaccineLocation>"*/-->
+<!--/*@thymesVar id="vaccine" type="java.lang.Integer"*/-->
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
-  <select>
+  <h1>Locations</h1>
+  <select th:field="*{vaccine}">
     <option th:each="entry, stat : ${vaccines}" th:value="${entry.id}" th:text="${entry.title}"></option>
   </select>
+  <a th:href="@{/vaccines(vaccineId=${vaccine})}"></a>
   <h1>Vaccines</h1>
   <div th:if="${locations.size() == 0}">
     <p>No vaccines available in this location</p>
