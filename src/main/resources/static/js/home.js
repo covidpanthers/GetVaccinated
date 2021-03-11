@@ -1,11 +1,17 @@
- var modal = document.getElementById("myModal");
+var eligibilityModal = document.getElementById("eligibilityModal");
+var warningModal = document.getElementById("warningModal");
 
-function showAlert() {
-  modal.style.display = "block";
+function showEligibilityModal() {
+  eligibilityModal.style.display = "block";
+}
+
+function showWarning() {
+  warningModal.style.display = "block";
 }
 
 window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
+  if (event.target == eligibilityModal || event.target == warningModal) {
+    eligibilityModal.style.display = "none";
+    warningModal.style.display = "none";
   }
 }
