@@ -9,11 +9,18 @@
 
 <main>
   <h1>Get Vaccinated</h1>
-  <p><a href="/schedule">Schedule a Vaccination</a></p>
+  <p><button th:onclick="showWarning()">Schedule a Vaccination</button></p>
 </main>
-<button type="button" th:onclick="showAlert()">Check Vaccine Eligility</button>
+<button type="button" th:onclick="showEligibilityModal()">Check Vaccine Eligility</button>
 
-<div id="myModal" class="modal">
+<div id="warningModal" class="modal">
+  <div class="modal-content">
+    <p>By clicking 'OK', I acknowledge that I may experience some side effects, such as fevers or muscle fatigue, after receiving the COVID-19 vaccine.</p>
+    <button onclick="location.href='/schedule'">OK</button>
+  </div>
+</div>
+
+<div id="eligibilityModal" class="modal">
   <div class="modal-content">
     <p>You are ineligible to schedule a vaccine appointment at this time. Please check back later.</p>
   </div>
