@@ -12,12 +12,13 @@
     crossorigin="anonymous"></script>
 </head>
 <body>
-  <h1>Locations</h1>
+  <header th:replace="fragments/header :: header"></header>
+  <h2>Locations</h2>
   <select id="vaccineOptions">
     <option th:each="entry, stat : ${vaccines}" th:value="${entry.id}" th:text="${entry.title}"></option>
   </select>
   <button onclick="search()">Search</button>
-  <h1>Vaccines</h1>
+  <h2>Vaccines</h2>
   <div th:if="${selectedVaccine != null}">
     <table>
       <tr>

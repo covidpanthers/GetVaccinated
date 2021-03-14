@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <title>Header</title>
+</head>
+<body>
+<header class="site-header" th:fragment="header">
+  <style>
+    .site-header {
+      display: flex;
+      flex-flow: row wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .site-header > nav {
+      display: flex;
+      justify-content: space-between;
+      width: 16ch;
+    }
+  </style>
+  <h1>Get Vaccinated</h1>
+  <nav>
+    <a href="/">Home</a>
+    <span>&#x275A;</span>
+    <a href="/resources">Resources</a>
+  </nav>
+</header>
+</body>
+</html>
