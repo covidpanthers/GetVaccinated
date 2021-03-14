@@ -10,6 +10,7 @@
 <main>
   <h1>Get Vaccinated</h1>
   <p><button th:onclick="showWarning()">Schedule a Vaccination</button></p>
+  <p><button onclick="redirect()">Report side effects</button></p>
 </main>
 <button type="button" th:onclick="showEligibilityModal()">Check Vaccine Eligility</button>
 
@@ -27,5 +28,11 @@
 </div>
 
  <script type="text/javascript" th:src="@{/js/home.js}"></script>
+  <script type="text/javascript">
+    function redirect() {
+      window.open(' https://vaers.hhs.gov/ ', '_blank');
+    }
+  </script>
+  </script>
 </body>
 </html>
