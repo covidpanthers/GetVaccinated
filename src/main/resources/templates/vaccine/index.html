@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!--/*@thymesVar id="vaccines" type="java.util.List<com.sweng894.GetVaccinated.api.entity.Vaccine>"*/-->
+<!--/*@thymesVar id="locations" type="java.util.List<com.sweng894.GetVaccinated.api.entity.VaccineLocation>"*/-->
+<!--/*@thymesVar id="selectedVaccine" type="com.sweng894.GetVaccinated.api.entity.Vaccine"*/-->
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+</head>
+<body>
+  <h1>Locations</h1>
+  <select id="vaccineOptions">
+    <option th:each="entry, stat : ${vaccines}" th:value="${entry.id}" th:text="${entry.title}"></option>
+  </select>
+  <button onclick="search()">Search</button>
+  <h1>Vaccines</h1>
+  <div th:if="${selectedVaccine != null}">
+    <table>
+      <tr>
+        <th>Location</th>
+        <th>Availability</th>
+      </tr>
+      <tr th:each="location : ${selectedVaccine.locations}">
+        <td th:text="${location.location}"></td>
+        <td th:text="${location.availabilityCount}"></td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    function search() {
+      window.location.href = `/vaccines?vaccineId=${$('#vaccineOptions option:selected').val()}`;
+    }
+  </script>
+</body>
+</html>
