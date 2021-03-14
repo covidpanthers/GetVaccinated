@@ -18,25 +18,19 @@ public class DynamoDbConfiguration {
     }
     @Bean
     public AmazonDynamoDB amazonDynamoDB() {
-      var accessKeyId = System.getenv("AWS_ACCESS_KEY_ID");
-      var awsSecretAccess = System.getenv("AWS_SECRET_ACCESS_KEY");
       var region = System.getenv("AWS_DEFAULT_REGION");
-      if (accessKeyId == null) {
-        accessKeyId = "";
-      }
-      if (awsSecretAccess == null) {
-        awsSecretAccess = "";
-      }
-      var builder = AmazonDynamoDBClientBuilder
-        .standard()
-        .withCredentials(new AWSStaticCredentialsProvider(
-          new BasicAWSCredentials(accessKeyId, awsSecretAccess)
-        ));
       if (region == null) {
-        builder = builder.withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
+        return AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
           "http://localhost:8000", "us-west-2"
-        ));
+        ))
+        .withCredentials(new AWSStaticCredentialsProvider(
+          new BasicAWSCredentials("", "")
+        )).build();
+      } else {
+        return AmazonDynamoDBClientBuilder
+          .standard()
+          .withRegion(region)
+          .build();
       }
-      return builder.build();
     }
   }
