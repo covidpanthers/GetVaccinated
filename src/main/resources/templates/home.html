@@ -9,21 +9,38 @@
 
 <main>
   <h1>Get Vaccinated</h1>
-  <p><button th:onclick="showWarning()">Schedule a Vaccination</button></p>
+  <p><button  value="warningModal" th:onclick="showModal('', 'warningModal')">Schedule a Vaccination</button></p>
   <p><button><a href="/vaccines">Vaccines Info</a></button></p>
 </main>
-<button type="button" th:onclick="showEligibilityModal()">Check Vaccine Eligility</button>
 
 <div id="warningModal" class="modal">
   <div class="modal-content">
     <p>By clicking 'OK', I acknowledge that I may experience some side effects, such as fevers or muscle fatigue, after receiving the COVID-19 vaccine.</p>
-    <button onclick="location.href='/schedule'">OK</button>
+    <button th:onclick="showModal('warningModal', 'eligibilityQ1')">OK</button>
   </div>
 </div>
 
-<div id="eligibilityModal" class="modal">
+<div id="eligibilityQ1" class="modal">
   <div class="modal-content">
-    <p>You are ineligible to schedule a vaccine appointment at this time. Please check back later.</p>
+    <p>Are you 50 years or older?</p>
+    <button th:onclick="showModal('eligibilityQ1', 'eligibilityQ2')"> No </button>
+    <button th:onclick="location.href='schedule'"> Yes </button>
+  </div>
+</div>
+
+<div id="eligibilityQ2" class="modal">
+  <div class="modal-content">
+    <p>Do you have one or more qualifying medical conditions associated to qualify under the required age threshold?</p>
+    <button th:onclick="showModal('eligibilityQ2','eligibilityQ3')"> No </button>
+    <button th:onclick="location.href='/schedule'"> Yes </button>
+  </div>
+</div>
+
+<div id="eligibilityQ3" class="modal">
+  <div class="modal-content">
+    <p>Do you fall into the allowed essential worker or teaching profession?</p>
+    <button th:onclick="location.href='/schedule/ineligible'"> No </button>
+    <button th:onclick="location.href='/schedule'"> Yes </button>
   </div>
 </div>
 
