@@ -122,7 +122,7 @@ public final class ScheduleController {
   }
   
   @GetMapping("/schedule/ineligible")
-  public String getEligiblePage() {
+  public String getIneligiblePage() {
 	  return "schedule/ineligible";
   }
 }
