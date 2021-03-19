@@ -65,6 +65,6 @@ public final class ScheduleControllerTests {
   
   @Test
   public void getIneligiblePage() throws Exception {
-	mockMvc.perform(get("/schedule/ineligible")).andExpect(status().isOk());
+    mockMvc.perform(get("/schedule/ineligible")).andExpect(status().isOk());
   }
 }
