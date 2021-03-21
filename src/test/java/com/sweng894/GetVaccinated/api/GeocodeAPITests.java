@@ -4,9 +4,11 @@ import com.sweng894.GetVaccinated.api.library.GeocodeAPI;
 import net.bytebuddy.description.type.TypeList;
 import net.minidev.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+@Tag("integration")
 @SpringBootTest
 public class GeocodeAPITests {
 
