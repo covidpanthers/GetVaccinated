@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link rel="stylesheet" th:href="@{/css/styles.css}">
+  <title>Get Vaccinated - Home</title>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+
+<div>
+  <b> You are qualified for the COVID-19 vaccine. </b>
+  <p>Continue to schedule your vaccine appointment. </p>
+  <button th:onclick="showModal('', 'warningModal')">Get Started</button>
+</div>
+	
+<div id="warningModal" class="modal">
+  <div class="modal-content">
+    <p>By clicking 'OK', I acknowledge that I may experience some side effects, such as fevers or muscle fatigue, after receiving the COVID-19 vaccine.</p>
+    <button th:onclick="showModal('warningModal', 'eligibilityQ1')">OK</button>
+  </div>
+</div>
+
+<div id="eligibilityQ1" class="modal">
+  <div class="modal-content">
+    <p>Are you 50 years or older?</p>
+    <button th:onclick="showModal('eligibilityQ1', 'eligibilityQ2')"> No </button>
+    <button th:onclick="location.href='/schedule'"> Yes </button>
+  </div>
+</div>
+
+<div id="eligibilityQ2" class="modal">
+  <div class="modal-content">
+    <p>Do you have one or more qualifying medical conditions associated to qualify under the required age threshold?</p>
+    <button th:onclick="showModal('eligibilityQ2','eligibilityQ3')"> No </button>
+    <button th:onclick="location.href='/schedule'"> Yes </button>
+  </div>
+</div>
+
+<div id="eligibilityQ3" class="modal">
+  <div class="modal-content">
+    <p>Do you fall into the allowed essential worker or teaching profession?</p>
+    <button th:onclick="location.href='/schedule/ineligible'"> No </button>
+    <button th:onclick="location.href='/schedule'"> Yes </button>
+  </div>
+</div>
+
+<script type="text/javascript" th:src="@{/js/eligible.js}"></script>
+	
+</body>
+</html>
