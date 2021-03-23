@@ -10,9 +10,9 @@
 <header th:replace="fragments/header :: header"></header>
 
 <div>
-  <b> You are qualified for the COVID-19 vaccine. </b>
+  <p>Let's check if you qualify for the COVID-19 vaccine at this time. </p>
   <p>Continue to schedule your vaccine appointment. </p>
-  <button th:onclick="showModal('', 'warningModal')">Get Started</button>
+  <button th:onclick="showModal('', 'warningModal')">Continue</button>
 </div>
 	
 <div id="warningModal" class="modal">
