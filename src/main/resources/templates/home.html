@@ -9,6 +9,15 @@
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
+  <div style="width:75%">
+  	<p> Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus called SARS-CoV-2. <p>
+  	<p> Most people infected with COVID-19 will experience mild to moderate respiratory illness and recover without requiring special treatment. 
+  	Older adults and people who have severe underlying medical conditions like heart or lung disease or diabetes seem to be at higher risk for 
+  	developing more serious complications from COVID-19 illness. </p>
+  	<p> Please refer to the <a href="https://www.who.int/health-topics/coronavirus#tab=tab_1" target="_blank">World Health Organization (WHO)</a> 
+  	or the <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank">Centers for Disease Control and Prevention (CDC)</a> for more information pertaining to COVID-19. </p> </br>
+  	<p> Authorized COVID-19 vaccines can help protect you from COVID-19.</p>
+  </div>
   <p><button  value="warningModal" th:onclick="showModal('', 'warningModal')">Schedule a Vaccination</button></p>
   <p><button><a href="/vaccines">Vaccines Info</a></button></p>
 </main>
