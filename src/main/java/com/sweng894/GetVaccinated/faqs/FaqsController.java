@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 public final class FaqsController {
   @GetMapping("/faqs")
   public String index() {
-    return "/faqs";
+    return "faqs";
   }
 }
