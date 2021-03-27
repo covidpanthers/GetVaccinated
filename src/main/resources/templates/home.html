@@ -18,8 +18,9 @@
   	or the <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank">Centers for Disease Control and Prevention (CDC)</a> for more information pertaining to COVID-19. </p> </br>
   	<p> Authorized COVID-19 vaccines can help protect you from COVID-19.</p>
   </div>
-  <p><button th:onclick="showModal('', 'covidCheck')">Schedule a Vaccination</button></p>
+  <p><button onclick="showModal('', 'covidCheck')">Schedule a Vaccination</button></p>
   <p><button><a href="/vaccines">Vaccines Info</a></button></p>
+  <p><button onclick="redirect()">Report side effects</button></p>
 </main>
 
 <div id="covidCheck" class="modal">
@@ -30,21 +31,21 @@
 	<form id="covidForm" action='/schedule/eligible'>
 	  <h4>1. In the past 14 days, have you tested positive for COVID-19?</h4>
 	  <input type="radio" id="y1" name="positiveTest" value="y" required>
-	  <label for="y">Yes</label><br>
+	  <label for="y1">Yes</label><br>
 	  <input type="radio" id="n1" name="positiveTest" value="n">
-	  <label for="n">No</label><br>
+	  <label for="n1">No</label><br>
 	  <br>
 	  <h4>2. In the past 14 days, have you been in close contact with anyone who tested positive for COVID-19?</h4>
 	  <input type="radio" id="y2" name="contact" value="y" required>
-	  <label for="y">Yes</label><br>
+	  <label for="y2">Yes</label><br>
 	  <input type="radio" id="n2" name="contact" value="n">
-	  <label for="n">No</label><br>
+	  <label for="n2">No</label><br>
 	  <br>
 	  <h4>3. Do you currently have fever, chills, cough, shortness of breath, difficulty breathing, fatigue, muscle or body aches, headache, new loss of taste or smell, sore throat, nausea, vomiting, or diarrhea?</h4>
 	  <input type="radio" id="y3" name="symptoms" value="y" required>
-	  <label for="y">Yes</label><br>
+	  <label for="y3">Yes</label><br>
 	  <input type="radio" id="n3" name="symptoms" value="n">
-	  <label for="n">No</label><br>
+	  <label for="n3">No</label><br>
 	  <br> <br>
 	  <button id="continue" th:onclick="return check()">Continue</button>
 	  <p id="errorMsg" style="color:red"></p>
