@@ -62,4 +62,14 @@ public final class ScheduleControllerTests {
       .andExpect(status().isOk())
       .andExpect(content().contentType("text/calendar"));
   }
+  
+  @Test
+  public void getIneligiblePage() throws Exception {
+    mockMvc.perform(get("/schedule/ineligible")).andExpect(status().isOk());
+  }
+  
+  @Test
+  public void getEligiblePage() throws Exception {
+    mockMvc.perform(get("/schedule/eligible")).andExpect(status().isOk());
+  }
 }

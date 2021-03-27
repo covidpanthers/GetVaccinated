@@ -120,4 +120,14 @@ public final class ScheduleController {
     headers.add("Content-Type", "text/calendar");
     return new ResponseEntity<>(body, headers, HttpStatus.OK);
   }
+  
+  @GetMapping("/schedule/ineligible")
+  public String getIneligiblePage() {
+    return "schedule/ineligible";
+  }
+  
+  @GetMapping("/schedule/eligible")
+  public String getEligiblePage() {
+    return "schedule/eligible";
+  }
 }

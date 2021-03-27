@@ -7,9 +7,7 @@
   <meta content="width=device-width, initial-scale=1" name="viewport">
 </head>
 <body>
-<header>
-  <h1><a href="/">Get Vaccinated</a></h1>
-</header>
+<header th:replace="fragments/header :: header"></header>
 <main>
   <p>Confirmation Number: <span th:text="${confirmationNumber}"></span></p>
   <p><a th:href="@{/schedule/confirmation/{confirmationNumber}.ics(confirmationNumber=${confirmationNumber})}">Download Calendar Invite</a></p>

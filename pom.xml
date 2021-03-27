@@ -84,13 +84,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.jmockit</groupId>
-      <artifactId>jmockit</artifactId>
-      <version>1.49</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>5.7.1</version>
@@ -114,9 +107,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
         <configuration>
-          <argLine>
-            -javaagent:"${settings.localRepository}"/org/jmockit/jmockit/1.49/jmockit-1.49.jar
-          </argLine>
           <excludedGroups>integration</excludedGroups>
         </configuration>
       </plugin>
@@ -126,9 +116,6 @@
         <!--        <version>2.19.1</version>-->
         <version>3.0.0-M5</version>
         <configuration>
-          <argLine>
-            -javaagent:"${settings.localRepository}"/org/jmockit/jmockit/1.49/jmockit-1.49.jar
-          </argLine>
           <includes>
             <include>**/*.java</include>
           </includes>

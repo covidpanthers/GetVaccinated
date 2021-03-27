@@ -2,29 +2,55 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
   <link rel="stylesheet" th:href="@{/css/styles.css}">
   <title>Get Vaccinated - Home</title>
 </head>
 <body>
-
+<header th:replace="fragments/header :: header"></header>
 <main>
-  <h1>Get Vaccinated</h1>
-  <p><button th:onclick="showWarning()">Schedule a Vaccination</button></p>
-  <p><button onclick="redirect()">Report side effects</button></p>
+  <div style="width:75%">
+  	<p> Coronavirus disease (COVID-19) is an infectious disease caused by a newly discovered coronavirus called SARS-CoV-2. <p>
+  	<p> Most people infected with COVID-19 will experience mild to moderate respiratory illness and recover without requiring special treatment.
+  	Older adults and people who have severe underlying medical conditions like heart or lung disease or diabetes seem to be at higher risk for
+  	developing more serious complications from COVID-19 illness. </p>
+  	<p> Please refer to the <a href="https://www.who.int/health-topics/coronavirus#tab=tab_1" target="_blank">World Health Organization (WHO)</a>
+  	or the <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank">Centers for Disease Control and Prevention (CDC)</a> for more information pertaining to COVID-19. </p> </br>
+  	<p> Authorized COVID-19 vaccines can help protect you from COVID-19.</p>
+  </div>
+  <p><button th:onclick="showModal('', 'covidCheck')">Schedule a Vaccination</button></p>
+  <p><button><a href="/vaccines">Vaccines Info</a></button></p>
 </main>
-<button type="button" th:onclick="showEligibilityModal()">Check Vaccine Eligility</button>
 
-<div id="warningModal" class="modal">
+<div id="covidCheck" class="modal">
   <div class="modal-content">
-    <p>By clicking 'OK', I acknowledge that I may experience some side effects, such as fevers or muscle fatigue, after receiving the COVID-19 vaccine.</p>
-    <button onclick="location.href='/schedule'">OK</button>
-  </div>
-</div>
+	<h2>Before we schedule your vaccine</h2>
+	<p>For the safety of others, please answer this brief COVID-19 questionnaire for the person being scheduled.</p>
 
-<div id="eligibilityModal" class="modal">
-  <div class="modal-content">
-    <p>You are ineligible to schedule a vaccine appointment at this time. Please check back later.</p>
-  </div>
+	<form id="covidForm" action='/schedule/eligible'>
+	  <h4>1. In the past 14 days, have you tested positive for COVID-19?</h4>
+	  <input type="radio" id="y1" name="positiveTest" value="y" required>
+	  <label for="y">Yes</label><br>
+	  <input type="radio" id="n1" name="positiveTest" value="n">
+	  <label for="n">No</label><br>
+	  <br>
+	  <h4>2. In the past 14 days, have you been in close contact with anyone who tested positive for COVID-19?</h4>
+	  <input type="radio" id="y2" name="contact" value="y" required>
+	  <label for="y">Yes</label><br>
+	  <input type="radio" id="n2" name="contact" value="n">
+	  <label for="n">No</label><br>
+	  <br>
+	  <h4>3. Do you currently have fever, chills, cough, shortness of breath, difficulty breathing, fatigue, muscle or body aches, headache, new loss of taste or smell, sore throat, nausea, vomiting, or diarrhea?</h4>
+	  <input type="radio" id="y3" name="symptoms" value="y" required>
+	  <label for="y">Yes</label><br>
+	  <input type="radio" id="n3" name="symptoms" value="n">
+	  <label for="n">No</label><br>
+	  <br> <br>
+	  <button id="continue" th:onclick="return check()">Continue</button>
+	  <p id="errorMsg" style="color:red"></p>
+
+	</form>
+	</div>
 </div>
 
  <script type="text/javascript" th:src="@{/js/home.js}"></script>
