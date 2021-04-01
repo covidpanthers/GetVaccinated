@@ -5,11 +5,19 @@
   <meta charset="UTF-8">
   <title>Get Vaccinated - Confirmation</title>
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <script type="text/javascript" src="https://addevent.com/libs/atc/1.6.1/atc.min.js" async defer></script>
 </head>
 <body>
 <header th:replace="fragments/header :: header"></header>
 <main>
   <p>Confirmation Number: <span th:text="${confirmationNumber}"></span></p>
+  <div title="Add to Calendar" class="addeventatc">
+    Add to Calendar
+    <span class="start" th:text="|${timing.getMonth()}/${timing.getDay()}/2021 ${timing.getTime()}|"></span>
+    <span class="end" th:text="|${timing.getMonth()}/${timing.getDay()}/2021 ${timing.getTime()}|"></span>
+    <span class="timezone">America/Los_Angeles</span>
+    <span class="title">Appointment for Vaccine</span>
+  </div>
   <p><a th:href="@{/schedule/confirmation/{confirmationNumber}.ics(confirmationNumber=${confirmationNumber})}">Download Calendar Invite</a></p>
 </main>
 </body>
