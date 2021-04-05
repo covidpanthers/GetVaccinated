@@ -79,6 +79,14 @@
         <option th:each="time : ${times}" th:value="${time}" th:text="${time}">A</option>
       </select>
     </label>
+    <label>
+      Enter Name
+      <input type="text" th:field="*{name}"/>
+    </label>
+    <label>
+      Enter Email
+      <input type="text" th:field="*{email}"/>
+    </label>
     <input type="hidden" th:field="*{month}">
     <input type="hidden" th:field="*{day}">
     <button type="submit">Request Appointment</button>

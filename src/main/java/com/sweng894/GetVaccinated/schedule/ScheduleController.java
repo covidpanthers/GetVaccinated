@@ -66,8 +66,8 @@ public final class ScheduleController {
   @PostMapping("/schedule")
   public String post(@ModelAttribute ScheduleRequest request, Model model) {
     Appointment appointment = new Appointment();
-    appointment.setName("Test");
-    appointment.setEmail("fahad@email.com");
+    appointment.setName(request.getName());
+    appointment.setEmail(request.getEmail());
     appointment.setDate(Util.parseDate(request));
     var confirmation = this.repository.save(appointment);
     model.addAttribute("confirmation", confirmation.getConfirmationNumber());
@@ -76,7 +76,7 @@ public final class ScheduleController {
 
   @GetMapping("/schedule/{confirmationNumber}")
   public String getConfirmation(@PathVariable String confirmationNumber, Model model) {
-    var scheduleRequest = repository.getAppointmentConfirmation(confirmationNumber, "fahad@email.com");
+    var scheduleRequest = repository.getAppointmentByConfirmationNumber(confirmationNumber);
     if (scheduleRequest == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
     }
