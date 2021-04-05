@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<!--/*@thymesVar id="confirmationNumber" type="java.lang.String"*/-->
+<head>
+  <meta charset="UTF-8">
+  <title>Get Vaccinated - Check</title>
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <script
+    src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+</head>
+<body>
+<header th:replace="fragments/header :: header"></header>
+<main>
+  <label>Enter your Confirmation No</label>
+  <input type="text" id="confirmationNumber"/>
+  <label>Enter your Email</label>
+  <input type="text" id="email"/>
+  <button onclick="checkAppointment()">Search</button>
+  <table>
+    <thead>
+      <tr>
+        <th>Confirmation Number</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+</main>
+<script>
+  function checkAppointment() {
+    const number = $("#confirmationNumber").val();
+    const email = $("#email").val();
+    $.getJSON("../appointment/"+number+"/"+email, (data) => {
+      let html = '';
+      html +='<tr>';
+      html +='<td>'+ data.confirmationNumber + '</td>';
+      html +='<td>'+ data.date + '</td>';
+      html +='<td><a href="/schedule/appointment/'+data.confirmationNumber+'/'+data.email+'/edit">Edit</a></td>';
+      html +='</tr>';
+      $('table tbody').html(html);
+    });
+  }
+</script>
+</body>
+</html>
