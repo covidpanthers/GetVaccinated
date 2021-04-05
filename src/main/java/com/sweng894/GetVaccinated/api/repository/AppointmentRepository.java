@@ -42,8 +42,8 @@ public class AppointmentRepository {
     eav.put(":pk", new AttributeValue().withS(confirmationNumber));
     DynamoDBQueryExpression<Appointment> queryExpression = new DynamoDBQueryExpression<Appointment>()
       .withKeyConditionExpression("partitionKey = :pk").withExpressionAttributeValues(eav);
-
-    return dynamoDBMapper.query(Appointment.class, queryExpression).get(0);
+    var appointment = dynamoDBMapper.query(Appointment.class, queryExpression);
+    return appointment.size() > 0 ? appointment.get(0) : null;
   }
 
   public String delete(String confirmationNumber, String email) {

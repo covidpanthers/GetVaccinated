@@ -68,10 +68,16 @@ public final class ScheduleController {
     Appointment appointment = new Appointment();
     appointment.setName(request.getName());
     appointment.setEmail(request.getEmail());
-    appointment.setDate(Util.parseDate(request));
+    if(request.getDay() != null) {
+      appointment.setDate(Util.parseDate(request));
+    }
     var confirmation = this.repository.save(appointment);
-    model.addAttribute("confirmation", confirmation.getConfirmationNumber());
-    return "redirect:/schedule/" + confirmation.getConfirmationNumber();
+    var confirmationNumber = "";
+    if(confirmation != null) {
+      confirmationNumber = confirmation.getConfirmationNumber();
+    }
+    model.addAttribute("confirmation", confirmationNumber);
+    return "redirect:/schedule/" + confirmationNumber;
   }
 
   @GetMapping("/schedule/{confirmationNumber}")
