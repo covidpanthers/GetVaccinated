@@ -85,50 +85,51 @@ public final class ScheduleController {
     return "schedule/confirmation";
   }
 
-//  @GetMapping("/schedule/confirmation/{confirmationNumber}.ics")
-//  public ResponseEntity<String> downloadCalendarInvite(@PathVariable String confirmationNumber) throws SocketException {
-//    var scheduleRequest = repository.getAppointmentConfirmation(confirmationNumber);
-//    if (scheduleRequest == null) {
-//      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
-//    }
-//    var parts = scheduleRequest.getDate().getgetTime().split(":");
-//    var hour = Integer.parseInt(parts[0]);
-//    var icsCalendar = new Calendar();
-//    icsCalendar.getProperties().add(new ProdId("-//sweng894//GetVaccinated//EN"));
-//    icsCalendar.getProperties().add(Version.VERSION_2_0);
-//    icsCalendar.getProperties().add(CalScale.GREGORIAN);
-//
-//    var startDate = new GregorianCalendar();
-//    startDate.set(java.util.Calendar.MONTH, scheduleRequest.getMonth());
-//    startDate.set(java.util.Calendar.DAY_OF_MONTH, scheduleRequest.getDay());
-//    startDate.set(java.util.Calendar.YEAR, 2021);
-//    startDate.set(java.util.Calendar.HOUR_OF_DAY, hour);
-//    startDate.set(java.util.Calendar.MINUTE, 0);
-//    startDate.set(java.util.Calendar.SECOND, 0);
-//
-//    var endDate = new GregorianCalendar();
-//    startDate.set(java.util.Calendar.MONTH, scheduleRequest.getMonth());
-//    startDate.set(java.util.Calendar.DAY_OF_MONTH, scheduleRequest.getDay());
-//    startDate.set(java.util.Calendar.YEAR, 2021);
-//    startDate.set(java.util.Calendar.HOUR_OF_DAY, hour + 1);
-//    startDate.set(java.util.Calendar.MINUTE, 0);
-//    startDate.set(java.util.Calendar.SECOND, 0);
-//
-//    var eventName = "1st Vaccination";
-//    var start = new DateTime(startDate.getTime());
-//    var end = new DateTime(endDate.getTime());
-//    var meeting = new VEvent(start, end, eventName);
-//
-//    var ug = new UidGenerator("uidGen");
-//    var uid = ug.generateUid();
-//    meeting.getProperties().add(uid);
-//    icsCalendar.getComponents().add(meeting);
-//
-//    var body = icsCalendar.toString();
-//    var headers = new HttpHeaders();
-//    headers.add("Content-Type", "text/calendar");
-//    return new ResponseEntity<>(body, headers, HttpStatus.OK);
-//  }
+  @GetMapping("/schedule/confirmation/{confirmationNumber}.ics")
+  public ResponseEntity<String> downloadCalendarInvite(@PathVariable String confirmationNumber) throws SocketException {
+    var scheduleRequest = repository.getAppointmentByConfirmationNumber(confirmationNumber);
+    if (scheduleRequest == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
+    }
+    var date = scheduleRequest.getDate().split(" ")[0];
+    var parts = scheduleRequest.getDate().split(" ")[1].split(":");
+    var hour = Integer.parseInt(parts[0]);
+    var icsCalendar = new Calendar();
+    icsCalendar.getProperties().add(new ProdId("-//sweng894//GetVaccinated//EN"));
+    icsCalendar.getProperties().add(Version.VERSION_2_0);
+    icsCalendar.getProperties().add(CalScale.GREGORIAN);
+
+    var startDate = new GregorianCalendar();
+    startDate.set(java.util.Calendar.MONTH, Integer.parseInt(date.split("-")[1]));
+    startDate.set(java.util.Calendar.DAY_OF_MONTH, Integer.parseInt(date.split("-")[2]));
+    startDate.set(java.util.Calendar.YEAR, 2021);
+    startDate.set(java.util.Calendar.HOUR_OF_DAY, hour);
+    startDate.set(java.util.Calendar.MINUTE, 0);
+    startDate.set(java.util.Calendar.SECOND, 0);
+
+    var endDate = new GregorianCalendar();
+    startDate.set(java.util.Calendar.MONTH, Integer.parseInt(date.split("-")[1]));
+    startDate.set(java.util.Calendar.DAY_OF_MONTH, Integer.parseInt(date.split("-")[2]));
+    startDate.set(java.util.Calendar.YEAR, 2021);
+    startDate.set(java.util.Calendar.HOUR_OF_DAY, hour + 1);
+    startDate.set(java.util.Calendar.MINUTE, 0);
+    startDate.set(java.util.Calendar.SECOND, 0);
+
+    var eventName = "1st Vaccination";
+    var start = new DateTime(startDate.getTime());
+    var end = new DateTime(endDate.getTime());
+    var meeting = new VEvent(start, end, eventName);
+
+    var ug = new UidGenerator("uidGen");
+    var uid = ug.generateUid();
+    meeting.getProperties().add(uid);
+    icsCalendar.getComponents().add(meeting);
+
+    var body = icsCalendar.toString();
+    var headers = new HttpHeaders();
+    headers.add("Content-Type", "text/calendar");
+    return new ResponseEntity<>(body, headers, HttpStatus.OK);
+  }
 
   @GetMapping("/schedule/ineligible")
   public String getIneligiblePage() {
