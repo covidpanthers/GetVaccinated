@@ -1,16 +1,23 @@
 package com.sweng894.GetVaccinated.schedule;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.sweng894.GetVaccinated.api.entity.Appointment;
+import com.sweng894.GetVaccinated.api.repository.AppointmentRepository;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.mockito.Mockito.*;
 
 @Tag("integration")
 @SpringBootTest
@@ -20,6 +27,8 @@ public final class ScheduleControllerTests {
   private MockMvc mockMvc;
   @Autowired
   private ScheduleRepository repository;
+  @MockBean
+  AppointmentRepository appointmentRepository;
 
   @Test
   public void getSchedule() throws Exception {
@@ -28,7 +37,20 @@ public final class ScheduleControllerTests {
 
   @Test
   public void postSchedule() throws Exception {
-    mockMvc.perform(post("/schedule")).andExpect(status().is3xxRedirection());
+    ScheduleRequest request = new ScheduleRequest();
+    request.setEmail("test@test.com");
+
+    ObjectMapper mapper = new ObjectMapper();
+    mapper.configure(SerializationFeature.WRAP_ROOT_VALUE, false);
+    ObjectWriter ow = mapper.writer().withDefaultPrettyPrinter();
+    String requestJson = ow.writeValueAsString(request);
+
+    mockMvc.perform(
+      post("/schedule")
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(requestJson)
+    )
+      .andExpect(status().is3xxRedirection());
   }
 
   @Test
@@ -38,12 +60,11 @@ public final class ScheduleControllerTests {
 
   @Test
   public void getConfirmation() throws Exception {
-    var request = new ScheduleRequest();
-    request.setMonth(6);
-    request.setDay(1);
-    request.setTime("11:00");
-    var confirmation = repository.saveRequest(request);
-    mockMvc.perform(get("/schedule/" + confirmation.getConfirmationNumber())).andExpect(status().isOk());
+    Appointment a = new Appointment();
+    a.setConfirmationNumber("12345");
+    when(appointmentRepository.getAppointmentByConfirmationNumber(anyString())).thenReturn(a);
+
+    mockMvc.perform(get("/schedule/" + a.getConfirmationNumber())).andExpect(status().isOk());
   }
 
   @Test
@@ -53,21 +74,22 @@ public final class ScheduleControllerTests {
 
   @Test
   public void getCalendarInvite() throws Exception {
-    var request = new ScheduleRequest();
-    request.setMonth(6);
-    request.setDay(1);
-    request.setTime("16:00");
-    var confirmation = repository.saveRequest(request);
-    mockMvc.perform(get("/schedule/confirmation/" + confirmation.getConfirmationNumber() + ".ics"))
+    Appointment a = new Appointment();
+    a.setConfirmationNumber("12345");
+    a.setDate("2021-01-01 11:00");
+    when(appointmentRepository.save(anyObject())).thenReturn(a);
+    when(appointmentRepository.getAppointmentByConfirmationNumber(anyString())).thenReturn(a);
+
+    mockMvc.perform(get("/schedule/confirmation/" + a.getConfirmationNumber() + ".ics"))
       .andExpect(status().isOk())
       .andExpect(content().contentType("text/calendar"));
   }
-  
+
   @Test
   public void getIneligiblePage() throws Exception {
     mockMvc.perform(get("/schedule/ineligible")).andExpect(status().isOk());
   }
-  
+
   @Test
   public void getEligiblePage() throws Exception {
     mockMvc.perform(get("/schedule/eligible")).andExpect(status().isOk());

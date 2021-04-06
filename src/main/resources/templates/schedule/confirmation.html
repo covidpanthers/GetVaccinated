@@ -13,8 +13,8 @@
   <p>Confirmation Number: <span th:text="${confirmationNumber}"></span></p>
   <div title="Add to Calendar" class="addeventatc">
     Add to Calendar
-    <span class="start" th:text="|${timing.getMonth()}/${timing.getDay()}/2021 ${timing.getTime()}|"></span>
-    <span class="end" th:text="|${timing.getMonth()}/${timing.getDay()}/2021 ${timing.getTime()}|"></span>
+    <span class="start" th:text="|${timing}|"></span>
+    <span class="end" th:text="|${timing}|"></span>
     <span class="timezone">America/Los_Angeles</span>
     <span class="title">Appointment for Vaccine</span>
   </div>

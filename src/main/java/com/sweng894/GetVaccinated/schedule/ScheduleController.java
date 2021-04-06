@@ -1,5 +1,7 @@
 package com.sweng894.GetVaccinated.schedule;
 
+import com.sweng894.GetVaccinated.api.entity.Appointment;
+import com.sweng894.GetVaccinated.api.repository.AppointmentRepository;
 import net.fortuna.ical4j.model.Calendar;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.component.VEvent;
@@ -7,6 +9,7 @@ import net.fortuna.ical4j.model.property.CalScale;
 import net.fortuna.ical4j.model.property.ProdId;
 import net.fortuna.ical4j.model.property.Version;
 import net.fortuna.ical4j.util.UidGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +28,10 @@ import java.util.Locale;
 
 @Controller
 public final class ScheduleController {
-  private final ScheduleRepository repository;
+  @Autowired
+  private final AppointmentRepository repository;
 
-  public ScheduleController(ScheduleRepository repository) {
+  public ScheduleController(AppointmentRepository repository) {
     this.repository = repository;
   }
 
@@ -61,29 +65,40 @@ public final class ScheduleController {
 
   @PostMapping("/schedule")
   public String post(@ModelAttribute ScheduleRequest request, Model model) {
-    var confirmation = this.repository.saveRequest(request);
-    model.addAttribute("confirmation", confirmation);
-    return "redirect:/schedule/" + confirmation.getConfirmationNumber();
+    Appointment appointment = new Appointment();
+    appointment.setName(request.getName());
+    appointment.setEmail(request.getEmail());
+    if(request.getDay() != null) {
+      appointment.setDate(Util.parseDate(request));
+    }
+    var confirmation = this.repository.save(appointment);
+    var confirmationNumber = "";
+    if(confirmation != null) {
+      confirmationNumber = confirmation.getConfirmationNumber();
+    }
+    model.addAttribute("confirmation", confirmationNumber);
+    return "redirect:/schedule/" + confirmationNumber;
   }
 
   @GetMapping("/schedule/{confirmationNumber}")
   public String getConfirmation(@PathVariable String confirmationNumber, Model model) {
-    var scheduleRequest = repository.getRequest(confirmationNumber);
+    var scheduleRequest = repository.getAppointmentByConfirmationNumber(confirmationNumber);
     if (scheduleRequest == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
     }
     model.addAttribute("confirmationNumber", confirmationNumber);
-    model.addAttribute("timing", scheduleRequest);
+    model.addAttribute("timing", scheduleRequest.getDate());
     return "schedule/confirmation";
   }
 
   @GetMapping("/schedule/confirmation/{confirmationNumber}.ics")
   public ResponseEntity<String> downloadCalendarInvite(@PathVariable String confirmationNumber) throws SocketException {
-    var scheduleRequest = repository.getRequest(confirmationNumber);
+    var scheduleRequest = repository.getAppointmentByConfirmationNumber(confirmationNumber);
     if (scheduleRequest == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Confirmation number not found.");
     }
-    var parts = scheduleRequest.getTime().split(":");
+    var date = scheduleRequest.getDate().split(" ")[0];
+    var parts = scheduleRequest.getDate().split(" ")[1].split(":");
     var hour = Integer.parseInt(parts[0]);
     var icsCalendar = new Calendar();
     icsCalendar.getProperties().add(new ProdId("-//sweng894//GetVaccinated//EN"));
@@ -91,16 +106,16 @@ public final class ScheduleController {
     icsCalendar.getProperties().add(CalScale.GREGORIAN);
 
     var startDate = new GregorianCalendar();
-    startDate.set(java.util.Calendar.MONTH, scheduleRequest.getMonth());
-    startDate.set(java.util.Calendar.DAY_OF_MONTH, scheduleRequest.getDay());
+    startDate.set(java.util.Calendar.MONTH, Integer.parseInt(date.split("-")[1]));
+    startDate.set(java.util.Calendar.DAY_OF_MONTH, Integer.parseInt(date.split("-")[2]));
     startDate.set(java.util.Calendar.YEAR, 2021);
     startDate.set(java.util.Calendar.HOUR_OF_DAY, hour);
     startDate.set(java.util.Calendar.MINUTE, 0);
     startDate.set(java.util.Calendar.SECOND, 0);
 
     var endDate = new GregorianCalendar();
-    startDate.set(java.util.Calendar.MONTH, scheduleRequest.getMonth());
-    startDate.set(java.util.Calendar.DAY_OF_MONTH, scheduleRequest.getDay());
+    startDate.set(java.util.Calendar.MONTH, Integer.parseInt(date.split("-")[1]));
+    startDate.set(java.util.Calendar.DAY_OF_MONTH, Integer.parseInt(date.split("-")[2]));
     startDate.set(java.util.Calendar.YEAR, 2021);
     startDate.set(java.util.Calendar.HOUR_OF_DAY, hour + 1);
     startDate.set(java.util.Calendar.MINUTE, 0);
@@ -130,5 +145,15 @@ public final class ScheduleController {
   @GetMapping("/schedule/eligible")
   public String getEligiblePage() {
     return "schedule/eligible";
+  }
+
+  @GetMapping("schedule/appointment")
+  public String getCheckPage() {
+    return "schedule/check";
+  }
+
+  @GetMapping("/schedule/appointment/{confirmationNumber}/{email}/edit")
+  public String getAppointmentEditPage() {
+    return "schedule/edit-appointment";
   }
 }
