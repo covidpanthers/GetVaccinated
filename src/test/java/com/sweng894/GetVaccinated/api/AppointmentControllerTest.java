@@ -30,9 +30,11 @@ public class AppointmentControllerTest {
     }};
 
     Appointment expected = new Appointment(
-      "David Sweeney",
       "TEST_CONFIRMATION_NUMBER",
       "test@abc.com",
+      "APPOINTMENT",
+      "JOHANNES BACH",
+      "ABC123",
       "CONFIRMED",
       "2021-04-09 21:00:00"
     );
@@ -51,9 +53,11 @@ public class AppointmentControllerTest {
     }};
 
     Appointment expected = new Appointment(
-      "David Sweeney",
       "TEST_CONFIRMATION_NUMBER",
       "test@abc.com",
+      "APPOINTMENT",
+      "JOHANNES BACH",
+      "ABC123",
       "CONFIRMED",
       "2021-04-09 21:00:00"
     );
@@ -72,9 +76,11 @@ public class AppointmentControllerTest {
     }};
 
     Appointment expected = new Appointment(
-      "David Sweeney",
       "TEST_CONFIRMATION_NUMBER",
       "test@abc.com",
+      "APPOINTMENT",
+      "JOHANNES BACH",
+      "ABC123",
       "CONFIRMED",
       "2021-04-09 21:00:00"
     );
@@ -87,9 +93,11 @@ public class AppointmentControllerTest {
   @Test
   public void testUpdateAppointmentSuccess() {
     Appointment actual = new Appointment(
-      "David Sweeney",
       "TEST_CONFIRMATION_NUMBER",
       "test@abc.com",
+      "APPOINTMENT",
+      "JOHANNES BACH",
+      "ABC123",
       "CONFIRMED",
       "2021-04-09 21:00:00"
     );
@@ -99,9 +107,11 @@ public class AppointmentControllerTest {
     }};
 
     Appointment expected = new Appointment(
-      "David Sweeney",
       "TEST_CONFIRMATION_NUMBER",
       "test@abc.com",
+      "APPOINTMENT",
+      "JOHANNES BACH",
+      "ABC123",
       "CONFIRMED",
       "2021-04-09 21:00:00"
     );
@@ -113,9 +123,11 @@ public class AppointmentControllerTest {
 
   private Appointment getGenericAppointment() {
     Appointment output = new Appointment(
-      "David Sweeney",
       "TEST_CONFIRMATION_NUMBER",
       "test@abc.com",
+      "APPOINTMENT",
+      "JOHANNES BACH",
+      "ABC123",
       "CONFIRMED",
       "2021-04-09 21:00:00"
     );

@@ -6,24 +6,15 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import org.springframework.beans.factory.annotation.Value;
+import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
+import com.sweng894.GetVaccinated.api.entity.Appointment;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-
 @Configuration
-@Profile("dev")
-public class DynamoDbConfiguration {
-  @Value("${AWS_ACCESS_KEY}")
-  private String AWS_ACCESS_KEY;
-
-  @Value("${AWS_SECRET_KEY}")
-  private String AWS_SECRET_KEY;
-
-  @Value("${AWS_ENDPOINT}")
-  private String AWS_ENDPOINT;
-
+@Profile("test")
+public class DynamoDbTestConfiguration {
   @Bean
   public DynamoDBMapper dynamoDBMapper() {
     return new DynamoDBMapper(amazonDynamoDB());
@@ -34,16 +25,26 @@ public class DynamoDbConfiguration {
     var region = System.getenv("AWS_DEFAULT_REGION");
     if (region == null) {
       return AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration(
-        AWS_ENDPOINT, "us-east-1"
+        "http://localhost:8000", "us-west-2"
       ))
         .withCredentials(new AWSStaticCredentialsProvider(
-          new BasicAWSCredentials(AWS_ACCESS_KEY, AWS_SECRET_KEY)
+          new BasicAWSCredentials("DUMMY_ACCESS_KEY", "DUMMY_SECRET_KEY")
         )).build();
     } else {
+
       return AmazonDynamoDBClientBuilder
         .standard()
         .withRegion(region)
         .build();
+    }
+  }
+
+  public void createTable(DynamoDBMapper dynamoDBMapper, AmazonDynamoDB dynamoDB) {
+    var req = dynamoDBMapper.generateCreateTableRequest(Appointment.class);
+    req.setBillingMode("PAY_PER_REQUEST");
+    try {
+      dynamoDB.createTable(req);
+    } catch (ResourceInUseException ignored) {
     }
   }
 }

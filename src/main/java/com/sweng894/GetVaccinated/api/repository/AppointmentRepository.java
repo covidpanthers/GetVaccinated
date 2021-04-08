@@ -6,22 +6,16 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ResourceInUseException;
+import com.sweng894.GetVaccinated.api.config.DynamoDbConfiguration;
 import com.sweng894.GetVaccinated.api.entity.Appointment;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public class AppointmentRepository {
-  private final DynamoDBMapper dynamoDBMapper;
-
-  public AppointmentRepository(DynamoDBMapper dynamoDBMapper, AmazonDynamoDB dynamoDB) {
-    var req = dynamoDBMapper.generateCreateTableRequest(Appointment.class);
-    req.setBillingMode("PAY_PER_REQUEST");
-    try {
-      dynamoDB.createTable(req);
-    } catch (ResourceInUseException ignored) {
-    }
-    this.dynamoDBMapper = dynamoDBMapper;
-  }
+  @Autowired
+  private DynamoDBMapper dynamoDBMapper;
 
   public Appointment save(Appointment appointment){
     dynamoDBMapper.save(appointment);

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Get Vaccinated - Locations</title>
+  <script type="text/javascript" src='../../static/js/find.js'></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+          integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+          crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" i
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.js'></script>
+  <link href='https://api.mapbox.com/mapbox-gl-js/v2.2.0/mapbox-gl.css' rel='stylesheet' />
+
+</head>
+<body>
+  <div>
+    <form>
+      <input type="hidden" id="geohash1" value=""/>
+      <input type="hidden" id="geohash2" value=""/>
+      <div class="form-group">
+        <label for="zip">Enter a Zip Code: </label>
+        <input type="text" class="form-control" id="zip" placeholder="Zip Code"/><br>
+      </div>
+
+      <div class="form-group">
+        <label for="range">Range: </label>
+        <input type="text" class="form-control" id="range" placeholder="Miles"/><br>
+      </div>
+
+
+      <input type="submit" value="Submit" onclick="msg()"/>
+    </form>
+    <div id='map' class="container" style='width: 400px; height: 300px;'></div>
+      <script>
+        mapboxgl.accessToken = 'pk.eyJ1IjoiaG93bWFueW1vbmtleXMiLCJhIjoiY2ttcnpyMnRqMGNvdTMwbXh6eHBxOHlxbSJ9.YLUZ2hJvqe4WKwetrSVzpw';
+        var map = new mapboxgl.Map({
+          container: 'map', // container ID
+          style: 'mapbox://styles/mapbox/streets-v11', // style URL
+          center: [-77.85, 40.81], // starting position [lng, lat]
+          zoom: 9, // starting zoom
+          credentials: 'include'
+        });
+
+      var marker = new mapboxgl.Marker()
+      .setLngLat([40.81, -77.85])
+      .addTo(map);
+
+      </script>
+    </div>
+</body>
+</html>
