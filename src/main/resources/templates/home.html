@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1" name="viewport">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
   <link rel="stylesheet" th:href="@{/css/styles.css}">
   <title>Get Vaccinated - Home</title>
 </head>
-<body>
+<body class="container">
 <header th:replace="fragments/header :: header"></header>
 <main>
   <div style="width:75%">
@@ -18,14 +19,14 @@
   	or the <a href="https://www.cdc.gov/coronavirus/2019-ncov/index.html" target="_blank">Centers for Disease Control and Prevention (CDC)</a> for more information pertaining to COVID-19. </p> </br>
   	<p> Authorized COVID-19 vaccines can help protect you from COVID-19.</p>
   </div>
-  <p><button><a href="/schedule/appointment">Check your appointment</a></button></p>
-  <p><button onclick="showModal('', 'covidCheck')">Schedule a Vaccination</button></p>
-  <p><button><a href="/vaccines">Vaccines Info</a></button></p>
-  <p><button onclick="redirect()">Report side effects</button></p>
+  <p><a class="btn btn-primary" href="/schedule/appointment">Check your appointment</a></p>
+  <p><button class="btn btn-primary" onclick="showModal('', 'covidCheck')">Schedule a Vaccination</button></p>
+  <p><a class="btn btn-primary" href="/vaccines">Vaccines Info</a></p>
+  <p><button class="btn btn-primary" onclick="redirect()">Report side effects</button></p>
 </main>
 
 <div id="covidCheck" class="modal">
-  <div class="modal-content">
+  <div class="gv-modal-content">
 	<h2>Before we schedule your vaccine</h2>
 	<p>For the safety of others, please answer this brief COVID-19 questionnaire for the person being scheduled.</p>
 
@@ -48,7 +49,7 @@
 	  <input type="radio" id="n3" name="symptoms" value="n">
 	  <label for="n3">No</label><br>
 	  <br> <br>
-	  <button id="continue" th:onclick="return check()">Continue</button>
+	  <button class="btn btn-primary" id="continue" th:onclick="return check()">Continue</button>
 	  <p id="errorMsg" style="color:red"></p>
 
 	</form>

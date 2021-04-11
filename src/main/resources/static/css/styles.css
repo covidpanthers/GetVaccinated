@@ -1,6 +1,6 @@
 /* Vaccine ineligibility modal */
 .modal {
-  display: none; 
+  display: none;
   position: fixed;
   z-index: 1;
   padding-top: 100px;
@@ -13,7 +13,7 @@
   background-color: rgba(0,0,0,0.4);
 }
 
-.modal-content {
+.gv-modal-content {
   background-color: #fefefe;
   margin: auto;
   padding: 20px;
