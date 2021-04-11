@@ -1,6 +1,5 @@
 package com.sweng894.GetVaccinated.resources;
 
-import com.sweng894.GetVaccinated.schedule.ScheduleRepository;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
