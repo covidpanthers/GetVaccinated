@@ -10,16 +10,39 @@
     src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
     crossorigin="anonymous"></script>
+  <style>
+    .check-form {
+      display: grid;
+      gap: 1em;
+    }
+    .check-form > div {
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      display: grid;
+      gap: 1.5em;
+    }
+  </style>
 </head>
 <body class="container">
 <header th:replace="fragments/header :: header"></header>
 <main>
-  <label class="form-label" for="confirmationNumber">Enter your Confirmation No</label>
-  <input type="text" id="confirmationNumber"/>
-  <label class="form-label" for="email">Enter your Email</label>
-  <input type="text" id="email"/>
-  <button class="btn btn-primary" onclick="checkAppointment()">Search</button>
-  <table>
+  <form class="check-form">
+    <div>
+      <label class="form-label" for="confirmationNumber">Enter your Confirmation Number:</label>
+      <input class="form-control" type="text" id="confirmationNumber"/>
+    </div>
+    <div>
+      <label class="form-label" for="email">Enter your Email Address:</label>
+      <input class="form-control" type="email" id="email"/>
+    </div>
+    <div>
+      <button type="submit" class="btn btn-primary" onclick="checkAppointment()">Search</button>
+    </div>
+  </form>
+  <table class="table">
     <thead>
       <tr>
         <th>Confirmation Number</th>
@@ -32,7 +55,9 @@
   </table>
 </main>
 <script>
-  function checkAppointment() {
+  const form = document.querySelector('.check-form')
+  form.addEventListener('submit', (evt) => {
+    evt.preventDefault()
     const number = $("#confirmationNumber").val();
     const email = $("#email").val();
     $.getJSON("../appointment/"+number+"/"+email, (data) => {
@@ -43,8 +68,8 @@
       html +='<td><a href="/schedule/appointment/'+data.confirmationNumber+'/'+data.email+'/edit">Edit</a></td>';
       html +='</tr>';
       $('table tbody').html(html);
-    });
-  }
+    })
+  })
 </script>
 </body>
 </html>

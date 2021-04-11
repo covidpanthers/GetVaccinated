@@ -25,8 +25,6 @@ import static org.mockito.Mockito.*;
 public final class ScheduleControllerTests {
   @Autowired
   private MockMvc mockMvc;
-  @Autowired
-  private ScheduleRepository repository;
   @MockBean
   AppointmentRepository appointmentRepository;
 
