@@ -47,6 +47,8 @@ public class HealthDepartmentControllerTest {
   public void testDeleteHealthDepartmentSuccess() {
     HealthDepartment expected = getGenericHealthDepartment();
 
+    healthDepartmentController.addHealthDepartment(expected);
+
     Assertions.assertEquals("Department Deleted!",
       healthDepartmentController.deleteHealthDepartment(expected.getId(),
         expected.getState()));
