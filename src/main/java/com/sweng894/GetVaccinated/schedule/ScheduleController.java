@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.SocketException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.format.TextStyle;
@@ -42,24 +43,14 @@ public final class ScheduleController {
     if (month == null) {
       month = LocalDateTime.now().getMonthValue();
     }
-    var weeks = Week.weeksOfMonth(2021, month);
-    // TODO: retrieve this data dynamically when appointments have availability information
-    var times = Arrays.asList(
-      "10:00", "11:00", "12:00", "13:00", "14:00",
-      "15:00", "16:00", "17:00"
-    );
-    var request = new ScheduleRequest();
-    request.setTime("");
-    request.setMonth(month);
-    request.setDay(day);
-    model.addAttribute("times", times);
-    model.addAttribute("request", request);
+    var m = new ScheduleModel();
+    m.setTime("");
+    m.setMonth(month);
+    m.setDay(day);
     model.addAttribute("monthDisplayName", Month.of(month).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-    model.addAttribute("month", month);
-    model.addAttribute("day", day);
     model.addAttribute("previousMonth", month == 1 ? 1 : month - 1);
     model.addAttribute("nextMonth", month == 12 ? 12 : month + 1);
-    model.addAttribute("weeks", weeks);
+    model.addAttribute("m", m);
     return "schedule/index";
   }
 

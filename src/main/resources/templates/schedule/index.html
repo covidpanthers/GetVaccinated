@@ -1,13 +1,9 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
-<!--/*@thymesVar id="request" type="com.sweng894.GetVaccinated.schedule.ScheduleRequest"*/-->
-<!--/*@thymesVar id="times" type="java.util.List<String>"*/-->
-<!--/*@thymesVar id="weeks" type="java.util.List<java.util.Map<java.time.DayOfWeek, Integer>>"*/-->
 <!--/*@thymesVar id="monthDisplayName" type="java.lang.String"*/-->
-<!--/*@thymesVar id="month" type="java.lang.Integer"*/-->
-<!--/*@thymesVar id="day" type="java.lang.Integer"*/-->
 <!--/*@thymesVar id="previousMonth" type="java.lang.Integer"*/-->
 <!--/*@thymesVar id="nextMonth" type="java.lang.Integer"*/-->
+<!--/*@thymesVar id="m" type="com.sweng894.GetVaccinated.schedule.ScheduleModel"*/-->
 <head>
   <meta charset="UTF-8">
   <title>Get Vaccinated - Schedule</title>
@@ -25,7 +21,7 @@
       max-width: 80ch;
     }
     .selected-date {
-      background-color: gray;
+      background-color: #ddd !important;
     }
     #geocoder-container {
 	  min-width: 50%;
@@ -36,6 +32,10 @@
 	  height: 40%;
 	  width: 50%;
    }
+  .table-pagination {
+    display: flex;
+    justify-content: space-between;
+  }
   </style>
 </head>
 <body class="container">
@@ -44,9 +44,11 @@
   <div>
     <p>Select a date:</p>
     <h3 th:text="${monthDisplayName}"></h3>
-    <a th:href="@{/schedule(month=${previousMonth})}">< Previous</a>
-    <a th:href="@{/schedule(month=${nextMonth})}">Next ></a>
-    <table>
+    <div class="table-pagination">
+      <a th:href="@{/schedule(month=${previousMonth})}">< Previous</a>
+      <a th:href="@{/schedule(month=${nextMonth})}">Next ></a>
+    </div>
+    <table class="table">
       <thead>
       <tr>
         <th>Sun</th>
@@ -59,47 +61,54 @@
       </tr>
       </thead>
       <tbody>
-      <tr th:each="week: ${weeks}">
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).SUNDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).SUNDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).SUNDAY)})}"></a>
+      <tr th:each="week,iter: ${m.weeks()}">
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).SUNDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).SUNDAY)}" th:text="${week.get(T(java.time.DayOfWeek).SUNDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).SUNDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).SUNDAY)}" th:text="${week.get(T(java.time.DayOfWeek).SUNDAY)}"></a>
         </td>
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).MONDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).MONDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).MONDAY)})}"></a>
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).MONDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).MONDAY)}" th:text="${week.get(T(java.time.DayOfWeek).MONDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).MONDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).MONDAY)}" th:text="${week.get(T(java.time.DayOfWeek).MONDAY)}"></a>
         </td>
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).TUESDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).TUESDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).TUESDAY)})}"></a>
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).TUESDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).TUESDAY)}" th:text="${week.get(T(java.time.DayOfWeek).TUESDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).TUESDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).TUESDAY)}" th:text="${week.get(T(java.time.DayOfWeek).TUESDAY)}"></a>
         </td>
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).WEDNESDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).WEDNESDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).WEDNESDAY)})}"></a>
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).WEDNESDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).WEDNESDAY)}" th:text="${week.get(T(java.time.DayOfWeek).WEDNESDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).WEDNESDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).WEDNESDAY)}" th:text="${week.get(T(java.time.DayOfWeek).WEDNESDAY)}"></a>
         </td>
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).THURSDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).THURSDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).THURSDAY)})}"></a>
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).THURSDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).THURSDAY)}" th:text="${week.get(T(java.time.DayOfWeek).THURSDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).THURSDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).THURSDAY)}" th:text="${week.get(T(java.time.DayOfWeek).THURSDAY)}"></a>
         </td>
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).FRIDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).FRIDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).FRIDAY)})}"></a>
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).FRIDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).FRIDAY)}" th:text="${week.get(T(java.time.DayOfWeek).FRIDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).FRIDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).FRIDAY)}" th:text="${week.get(T(java.time.DayOfWeek).FRIDAY)}"></a>
         </td>
-        <td th:classappend="${day != null && week.get(T(java.time.DayOfWeek).SATURDAY) == day ? 'selected-date' : ''}">
-          <a th:text="${week.get(T(java.time.DayOfWeek).SATURDAY)}" th:href="@{/schedule(month=${month},day=${week.get(T(java.time.DayOfWeek).SATURDAY)})}"></a>
+        <td th:classappend="${m.classappend(week, T(java.time.DayOfWeek).SATURDAY)}">
+          <a th:if="${m.shouldEnableLink(week, T(java.time.DayOfWeek).SATURDAY)}" th:text="${week.get(T(java.time.DayOfWeek).SATURDAY)}" th:href="@{/schedule(month=${m.month},day=${week.get(T(java.time.DayOfWeek).SATURDAY)})}"></a>
+          <a th:unless="${m.shouldEnableLink(week, T(java.time.DayOfWeek).SATURDAY)}" th:text="${week.get(T(java.time.DayOfWeek).SATURDAY)}"></a>
         </td>
       </tr>
       </tbody>
     </table>
   </div>
-  <form method="post" th:action="@{/schedule}" th:object="${request}" th:if="${day != null && month != null}">
+  <form method="post" th:action="@{/schedule}" th:object="${m.request}" th:if="${m.day != null && m.month != null}">
     <label>
       Select an available time:
-      <select th:field="*{time}" required>
+      <select class="form-control" th:field="*{time}" required>
         <option value=""></option>
-        <option th:each="time : ${times}" th:value="${time}" th:text="${time}">A</option>
+        <option th:each="time : ${m.times}" th:value="${time}" th:text="${time}">A</option>
       </select>
     </label>
     <label>
-      Enter Name
-      <input type="text" th:field="*{name}"/>
+      Enter Name:
+      <input class="form-control" type="text" th:field="*{name}"/>
     </label>
     <label>
-      Enter Email
-      <input type="text" th:field="*{email}"/>
+      Enter Email:
+      <input class="form-control" type="email" th:field="*{email}"/>
     </label>
     <input type="hidden" th:field="*{month}">
     <input type="hidden" th:field="*{day}">
