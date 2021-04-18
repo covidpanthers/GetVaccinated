@@ -28,6 +28,7 @@ public class LocationController {
 
   @GetMapping("/location/{address}")
   public Location getLocation(@PathVariable("address") String address) {
+    locationService = new LocationService();
     return locationService.findLocationById(address, locationRepository);
   }
 

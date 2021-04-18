@@ -36,13 +36,20 @@ public class LocationRepository {
   public Location getLocation(String address) {
     GeocodeAPI api = new GeocodeAPI();
     double[] latlong = new double[2];
-    latlong = api.getLatLong(URLDecoder.decode(address, StandardCharsets.UTF_8));
-    String geohash = Geohash.encode(latlong[0], latlong[1]);
-    return dynamoDBMapper.load(Location.class, "LOC#", "GEO#" + geohash);
-  }
 
-  public List<Location> getLocationByState(String address) {
-    return null;
+    //Determine latitude and longitude of address
+    latlong = api.getLatLong(URLDecoder.decode(address, StandardCharsets.UTF_8));
+    //Convert latlong to geohash
+    String geohash = Geohash.encode(latlong[0], latlong[1]);
+
+    Map<String, AttributeValue> eav = new HashMap<>();
+    eav.put(":pk", new AttributeValue().withS("LOC#"));
+    eav.put(":sk", new AttributeValue().withS("GEO#" + geohash));
+    DynamoDBQueryExpression<Location> queryExpression = new DynamoDBQueryExpression<Location>()
+      .withKeyConditionExpression("partitionKey = :pk and begins_with(sortKey, :sk)").withExpressionAttributeValues(eav);
+    var location = dynamoDBMapper.query(Location.class, queryExpression);
+
+    return dynamoDBMapper.load(Location.class, "LOC#", "GEO#" + geohash);
   }
 
   public List<Location> getLocationsByGeohash(String geohash) {

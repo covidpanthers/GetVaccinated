@@ -39,7 +39,7 @@ public class LocationService{
 
     origin.setGeohash(Geohash.encode(origin.getLatitude(), origin.getLongitude()));
 
-    List<Location> locations = locationRepository.getLocationsByGeohash(origin.getGeohash().substring(0, 4));
+    List<Location> locations = locationRepository.getLocationsByGeohash(origin.getGeohash().substring(0, 3));
 
     for (Location location: locations) {
       double totalDistance = api.distanceBetweenTwoPoints(origin.getLatitude(), location.getLatitude(),
@@ -51,9 +51,6 @@ public class LocationService{
     return output;
   }
 
-  public List<Location> findLocationByState(String state) {
-    return null;
-  }
 
   public Location addLocation(Location location, LocationRepository locationRepository) {
     this.locationRepository = locationRepository;
@@ -64,7 +61,8 @@ public class LocationService{
     location.setLongitude(latlong[1]);
 
     String geohash = Geohash.encode(location.getLatitude(), location.getLongitude());
-    location.setGeohash(geohash);
+    location.setGeohash("GEO#" + geohash);
+    location.setLocationId("LOC#");
     return locationRepository.save(location);
   }
 }

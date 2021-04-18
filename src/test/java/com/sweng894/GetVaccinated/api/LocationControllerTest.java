@@ -9,6 +9,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Tag("integration")
 @SpringBootTest
 public class LocationControllerTest {
@@ -21,7 +24,8 @@ public class LocationControllerTest {
 
     locationController.addLocation(expected);
     String expectedLocation = expected.getGeohash();
-    String actualLocation = locationController.getLocation(expected.getAddress()).getGeohash();
+    Location actual = locationController.getLocation(expected.getAddress());
+    String actualLocation = actual.getGeohash();
     Assertions.assertEquals(expectedLocation, actualLocation);
   }
 
@@ -34,10 +38,32 @@ public class LocationControllerTest {
       locationController.deleteLocation(expected.getAddress()));
   }
 
+  @Test
+  public void testGetAllLocationsSuccess() {
+    List<Location> expected = new ArrayList<>();
+    locationController.addLocation(getGenericLocation());
+    expected.add(getGenericLocation());
+
+    List<Location> actual = locationController.getAllLocations();
+
+    Assertions.assertEquals(expected.size(), actual.size());
+  }
+
+  @Test
+  public void testLocationsByDistanceSuccess() {
+    List<Location> expected = new ArrayList<>();
+    expected.add(locationController.addLocation(getGenericLocation()));
+
+    List<Location> actual = new ArrayList<>();
+    actual = (locationController.getLocationsByDistance("15632", 10));
+
+    Assertions.assertTrue(actual.size() == 1);
+  }
+
 
   private Location getGenericLocation() {
-    Location output = new Location("HDP#PA#16259",
-      "dppmgnzn",
+    Location output = new Location("",
+      "dppmgr00",
       "LOCATION",
       "Giant Eagle Pharmacy-32",
       "4810 Old William Penn Highway",
