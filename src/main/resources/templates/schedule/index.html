@@ -36,6 +36,23 @@
     display: flex;
     justify-content: space-between;
   }
+  .marker {
+    background-image: url('../assets/mapbox-icon.png');
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  .mapboxgl-popup {
+    max-width: 200px;
+  }
+
+  .mapboxgl-popup-content {
+    text-align: left;
+    font-family: 'Open Sans', sans-serif;
+  }
   </style>
 </head>
 <body class="container">
@@ -118,6 +135,16 @@
 <br><br>
 <div>
  <p>Search to view location:</p>
+  <form id="search-form">
+    <label for="zip">Enter Zip Code:</label>
+    <input class="form-control" type="text" id="zip"/>
+    <label for="distance">Distance</label>
+    <select class="form-control" id="distance" required>
+      <option value="10">10 miles</option>
+      <option value="25">25 miles</option>
+    </select>
+    <button class="btn btn-primary" type="submit">Find Locations</button>
+  </form>
  <div id="map"></div>
 </div>
 <script type="text/javascript" th:src="@{/js/schedule.js}"></script>
